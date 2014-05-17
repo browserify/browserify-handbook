@@ -112,6 +112,13 @@ their values in the browser field to `false`:
 }
 ```
 
+The browser field *only* applies to the current package. Any mappings you put
+will not propagate down to its dependencies or up to its dependents. This
+isolation is designed to protect modules from each other so that when you
+require a module you won't need to worry about any system-wide effects it might
+have. Likewise, you shouldn't need to wory about how your local configuration
+might adversely affect modules far away deep into your dependency graph.
+
 ## browserify.transform field
 
 # finding good modules
