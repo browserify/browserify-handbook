@@ -1,4 +1,26 @@
-# intro
+# introduction
+
+This document covers how to use [browserify](http://browserify.org) to build
+modular applications.
+
+[![cc-by-3.0](http://i.creativecommons.org/l/by/3.0/80x15.png)](http://creativecommons.org/licenses/by/3.0/)
+
+browserify is a tool for compiling
+[node-flavored](http://nodejs.org/docs/latest/api/modules.html) commonjs modules
+for the browser.
+
+You can use browserify to organize your code and use third-party libraries even
+if you don't use node itself in any other capacity except for bundling.
+
+The module system that browserify uses is the same as node, so
+packages published to [npm](https://npmjs.org) that were originally intended for
+use in node but not browsers will work just fine in the browser too.
+
+Increasingly, people are publishing modules to npm which are intentionally
+designed to work in both node and in the browser using browserify and many
+packages on npm are intended for use in just the browser.
+[npm is for all javascript](http://maxogden.com/node-packaged-modules.html),
+front or backend alike.
 
 # node packaged modules
 
