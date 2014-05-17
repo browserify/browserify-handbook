@@ -49,7 +49,7 @@ modules.
 If you have a module with a main entry point of `main.js` for node but have a
 browser-specific entry point at `browser.js`, you can do:
 
-```
+``` json
 {
   "name": "mypkg",
   "version": "1.2.3",
@@ -74,7 +74,7 @@ You can do more with the "browser" field as an object instead of a string.
 For example, if you only want to swap out a single file in `lib/` with a
 browser-specific version, you could do:
 
-```
+``` json
 {
   "name": "mypkg",
   "version": "1.2.3",
@@ -87,7 +87,7 @@ browser-specific version, you could do:
 
 or if you want to swap out a module used locally in the package, you can do:
 
-```
+``` json
 {
   "name": "mypkg",
   "version": "1.2.3",
@@ -101,7 +101,7 @@ or if you want to swap out a module used locally in the package, you can do:
 You can ignore files (setting their contents to the empty object) by setting
 their values in the browser field to `false`:
 
-```
+``` json
 {
   "name": "mypkg",
   "version": "1.2.3",
@@ -120,6 +120,38 @@ have. Likewise, you shouldn't need to wory about how your local configuration
 might adversely affect modules far away deep into your dependency graph.
 
 ## browserify.transform field
+
+You can configure transforms to be automatically applied when a module is loaded
+in a package's `browserify.transform` field. For example, we can automatically
+apply the [brfs](https://npmjs.org/package/brfs) transform with this
+package.json:
+
+``` json
+{
+  "name": "mypkg",
+  "version": "1.2.3",
+  "main": "main.js",
+  "browserify": {
+    "transform": [ "brfs" ]
+  }
+}
+```
+
+Now in our `main.js` we can do:
+
+``` js
+var fs = require('fs');
+var src = fs.readFileSync(__dirname + '/foo.txt', 'utf8');
+
+module.exports = function (x) { return src.replace(x, 'zzz') };
+```
+
+and the `fs.readFileSync()` call will be inlined by brfs without consumers of
+the module having to know. You can apply as many transforms as you like in the
+transform array and they will be applied in order.
+
+Like the `"browser"` field, transforms configured in package.json will only
+apply to the local package for the same reasons.
 
 # finding good modules
 
