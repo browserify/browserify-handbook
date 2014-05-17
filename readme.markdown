@@ -54,7 +54,9 @@ browser:
 ## avoiding ../../../../../../..
 
 Not everything in an application properly belongs on the public npm and the
-overhead of setting up a private npm repo is still rather large.
+overhead of setting up a private npm or git repo is still rather large in many
+cases. Here are some approaches for avoiding the `../../../../../../../`
+relative paths problem.
 
 ### node_modules
 
@@ -115,12 +117,19 @@ by doing `require('app/foo.js')` to get `lib/foo.js`.
 
 ### custom paths
 
-You might see some places talk about using the `$NODE_PATH
+You might see some places talk about using the `$NODE_PATH` environment variable
+or `opts.paths` to add directories for node and browserify to look in to find
+modules.
 
-This works but has some important limitations to be aware of:
+Unlike most other platforms, using a shell-style array of path directories with
+`$NODE_PATH` is not as favorable in node compared to making effective use of the
+`node_modules` directory.
 
-* whenever you run your code with node or browserify, your environment
+This is because your application is more tightly coupled to a runtime
+environemtn configuration so there are more moving parts and your application
+will only work when your environment is setup correctly.
 
+node and browserify both support but discourage the use of `$NODE_PATH`.
 
 ## reusable components
 
