@@ -4,7 +4,7 @@
 
 ## require
 
-### how node_modules works
+### how require works
 
 ## module.exports
 
@@ -41,6 +41,33 @@
 # package.json
 
 ## browser field
+
+You can define a `"browser"` field in the package.json of any package that will
+tell browserify to override lookups for the main field and for individual
+modules.
+
+If you have a module with a main entry point of `main.js` for node but have a
+browser-specific entry point at `browser.js`, you can do:
+
+```
+{
+  "name": "mypkg",
+  "version": "1.2.3",
+  "main": "main.js",
+  "browser": "browser.js"
+}
+```
+
+Now when somebody does `require('mypkg')` in node, they will get the exports
+from `main.js`, but when they do `require('mypkg')` in a browser, they will get
+the exports from `browser.js`.
+
+Splitting up whether you are in the browser or not with a `"browser"` field in
+this way is greatly preferrable to checking whether you are in a browser at
+runtime because you may want to load different modules based on whether you are
+in node or the browser. If the `require()` calls for both node and the browser
+are in the same file, browserify's static analysis will include everything
+whether you use those files or not.
 
 ## browserify.transform field
 
