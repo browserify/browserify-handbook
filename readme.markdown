@@ -69,6 +69,49 @@ in node or the browser. If the `require()` calls for both node and the browser
 are in the same file, browserify's static analysis will include everything
 whether you use those files or not.
 
+You can do more with the "browser" field as an object instead of a string.
+
+For example, if you only want to swap out a single file in `lib/` with a
+browser-specific version, you could do:
+
+```
+{
+  "name": "mypkg",
+  "version": "1.2.3",
+  "main": "main.js",
+  "browser": {
+    "lib/foo.js": "lib/browser-foo.js"
+  }
+}
+```
+
+or if you want to swap out a module used locally in the package, you can do:
+
+```
+{
+  "name": "mypkg",
+  "version": "1.2.3",
+  "main": "main.js",
+  "browser": {
+    "fs": "level-fs-browser"
+  }
+}
+```
+
+You can ignore files (setting their contents to the empty object) by setting
+their values in the browser field to `false`:
+
+```
+{
+  "name": "mypkg",
+  "version": "1.2.3",
+  "main": "main.js",
+  "browser": {
+    "winston": false
+  }
+}
+```
+
 ## browserify.transform field
 
 # finding good modules
