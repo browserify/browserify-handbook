@@ -102,6 +102,17 @@ node_modules
 
 ### symlink
 
+Another handy trick if you are working on an application where you can make
+symlinks and don't need to support windows is to symlink a `lib/` or `app/`
+folder into `node_modules`. From the project root, do:
+
+```
+ln -s ../lib node_modules/app
+```
+
+and now from anywhere in your project you'll be able to require files in `lib/`
+by doing `require('app/foo.js')` to get `lib/foo.js`.
+
 ### custom paths
 
 You might see some places talk about using the `$NODE_PATH
