@@ -484,9 +484,31 @@ just work in the browser, so long as it doesn't do any server IO.
 
 # transforms
 
-## using from the command-line
+Instead of browserify baking in support for everything, it supports a flexible
+transform system that are used to convert source files in-place.
 
-## using from the api
+This way you can `require()` files written in coffee script or templates and
+everything will be compiled down to javascript.
+
+To use [coffeescript](http://coffeescript.org/) for example, you can use the
+[coffeeify](https://www.npmjs.org/package/coffeeify) transform.
+Make sure you've installed coffeeify first with `npm install coffeeify` then do:
+
+```
+$ browserify -t coffeeify main.coffee > bundle.js
+```
+
+or with the API you can do:
+
+```
+var b = browserify('main.coffee');
+b.transform('coffeeify');
+```
+
+The best part is, if you have source maps enabled with `--debug` or
+`opts.debug`, the bundle.js will map exceptions back into the original coffee
+script source files. This is very handy for debugging with firebug or chrome
+inspector.
 
 ## writing your own
 
