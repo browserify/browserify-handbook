@@ -237,23 +237,213 @@ event.
 There are many more things you can do with bundling. Check out the bundling
 section elsewhere in this document.
 
+## how browserify works
+
+Browserify starts at the entry point files that you give it and searches for any
+`require()` calls it finds using
+[static analysis](http://npmjs.org/package/detective)
+of the source code's
+[abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+
+For every `require()` call with a string in it, browserify resolves those module
+strings to file paths and then searches those file paths for `require()` calls
+recursively until the entire dependency graph is visited.
+
+Each file is concatenated into a single javascript file with a minimal
+`require()` definition that maps the statically-resolved names to internal IDs.
+
+This means that the bundle you generate is completely self-contained and has
+everything your application needs to work with a pretty negligible overhead.
+
+For more details about how browserify works, check out the compiler pipeline
+section of this document.
+
+## why concatenate
+
+Browserify is a build step that runs on the server. It generates a single bundle
+file that has everything in it.
+
+Here are some other ways of implementing module systems for the browser and what
+their strengths and weaknesses are:
+
+### window globals
+
+Instead of a module system, each file defines properties on the window global
+object or develops an internal namespacing scheme.
+
+This approach does not scale well without extreme diligence since each new file
+needs an additional `<script>` tag in all of the html pages where the
+application will be rendered. Further, the files tend to be very order-sensitive
+because some files need to be included before other files the expect globals to
+already be present in the environment.
+
+It can be difficult to refactor or maintain applications built this way.
+On the plus side, all browsers natively support this approach and no server-side
+tooling is required.
+
+This approach tends to be very slow since each `<script>` tag initiates a
+new round-trip http request.
+
+### concatenate
+
+Instead of window globals, all the scripts are concatenated beforehand on the
+server. The code is still order-sensitive and difficult to maintain, but loads
+much faster because only a single http request for a single `<script>` tag needs
+to execute.
+
+Without source maps, exceptions thrown will have offsets that can't be easily
+mapped back to their original files.
+
+### AMD
+
+Instead of using `<script>` tags, every file is wrapped with a `define()`
+function and callback. [This is AMD](http://requirejs.org/docs/whyamd.html). 
+
+The first argument is an array of modules to load that maps to each argument
+supplied to the callback. Once all the modules are loaded, the callback fires.
+
+``` js
+define(['jquery'] , function ($) {
+    return function () {};
+});
+```
+
+You can give your module a name in the first argument so that other modules can
+include it.
+
+There is a commonjs sugar syntax that stringifies each callback and scans it for
+`require()` calls
+[with a regexp](https://github.com/jrburke/requirejs/blob/master/require.js#L17).
+
+Code written this way is much less order-sensitive than concatenation or globals
+since the order is resolved by explicit dependency information.
+
+For performance reasons, most of the time AMD is bundled server-side into a
+single file and during development it is more common to actually use the
+asynchronous feature of AMD.
+
+### bundling commonjs server-side
+
+If you're going to have a build step for performance and a sugar syntax for
+convenience, why not scrap the whole AMD business altogether and bundle
+commonjs? With tooling you can resolve modules to address order-sensitivity and
+your development and production environments will be much more similar and less
+fragile. The CJS syntax is nicer and the ecosystem is exploding because of node
+and npm.
+
+You can seemlessly share code between node and the browser. You just need a
+build step and some tooling for source maps and auto-rebuilding.
+
+Plus, we can use node's module lookup algorithms to save us from version
+mismatch insanity so that we can have multiple conflicting versions of different
+required packages in the same application and everything will still work.
+
 # development
+
+Concatenation has some downsides, but these can be very adequately addressed
+with development tooling.
 
 ## source maps
 
-## npm run build
+Browserify supports a `--debug`/`-d` flag and `opts.debug` parameter to enable
+source maps. Source maps tell the browser to convert line and column offsets for
+exceptions thrown in the bundle file back into the offsets and filenames of the
+original sources.
+
+## auto-recompile
+
+Running a command to recompile your bundle every time can be slow and tedious.
+Luckily there are many tools to solve this problem.
+
+### [watchify](https://npmjs.org/package/watchify)
+
+You can use `watchify` interchangeably with `browserify` but instead of writing
+to an output file once, watchify will write the bundle file and then watch all
+of the files in your dependency graph for changes. When you modify a file, the
+new bundle file will be written much more quickly than the first time because of
+aggressive caching.
+
+You can use `-v` to print a message every time a new bundle is written:
+
+```
+$ watchify browser.js -d -o static/bundle.js -v
+610598 bytes written to static/bundle.js  0.23s
+610606 bytes written to static/bundle.js  0.10s
+610597 bytes written to static/bundle.js  0.14s
+610606 bytes written to static/bundle.js  0.08s
+610597 bytes written to static/bundle.js  0.08s
+610597 bytes written to static/bundle.js  0.19s
+```
+
+Here is a handy configuration for using watchify and browserify with the
+package.json "scripts" field:
+
+``` json
+{
+  "build": "browserify browser.js -o static/bundle.js",
+  "watch": "watchify browser.js -o static/bundle.js --debug --verbose",
+}
+```
+
+To build the bundle for production do `npm run build` and to watch files for
+during development do `npm run watch`.
+
+[Learn more about `npm run`](http://substack.net/task_automation_with_npm_run).
+
+### beefy
+
+If you would rather spin up a web server that automatically recompiles your code
+when you modify it, check out [beefy](http://didact.us/beefy/).
+
+Just give beefy an entry file:
+
+```
+beefy main.js
+```
+
+and it will set up shop on an http port.
+
+### browserify-middleware, enchilada
+
+If you are using express, check out
+[browserify-middleware](https://www.npmjs.org/package/browserify-middleware)
+or [enchilada](https://www.npmjs.org/package/enchilada).
+
+They both provide middleware you can drop into an express application for
+serving browserify bundles.
 
 ## using the api directly
 
-## watchify
+You can just use the API directly from an ordinary `http.createServer()` for
+development too:
 
-## beefy
+``` js
+var browserify = require('browserify');
+var http = require('http');
 
-## browserify-middleware
+http.createServer(function (req, res) {
+    if (req.url === '/bundle.js') {
+        res.setHeader('content-type', 'text/javascript');
+        var b = browserify(__dirname + '/main.js').bundle();
+        b.on('error', console.error);
+        b.pipe(res);
+    }
+    else res.writeHead(404, 'not found')
+});
+```
 
 ## grunt
 
+If you use grunt, you'll probably want to use the
+[grunt-browserify](https://www.npmjs.org/package/grunt-browserify) plugin.
+
 ## gulp
+
+If you use gulp, you should use the browserify API directly.
+
+Here is
+[a guide for getting started](http://viget.com/extend/gulp-browserify-starter-faq)
+with gulp and browserify.
 
 # builtins
 
