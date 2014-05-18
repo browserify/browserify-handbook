@@ -1,0 +1,22 @@
+{
+  "name": "browserify-handbook",
+  "version": "1.0.0",
+  "description": "how to build modular applications with browserify",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/browserify-handbook.git"
+  },
+  "homepage": "https://github.com/substack/browserify-handbook",
+  "keywords": [
+    "documentation",
+    "guide",
+    "handbook",
+    "browserify"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "cc-by-3.0"
+}
