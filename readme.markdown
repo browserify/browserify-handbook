@@ -237,45 +237,6 @@ event.
 There are many more things you can do with bundling. Check out the bundling
 section elsewhere in this document.
 
-## module philosophy
-
-People used to think that exporting a bunch of handy utility-style things would
-be the main way that programmers would consume code because that is the primary
-way of exporting and importing code on most other platforms and indeed still
-persists even on npm.
-
-However, this
-[kitchen-sink mentality](https://github.com/substack/node-mkdirp/issues/17)
-toward including a bunch of thematically-related but separable functionality
-into a single package appears to be an artifact for the difficulty of of
-publishing and discovery in a pre-github, pre-npm era.
-
-There are two other big problems with modules that try to export a bunch of
-functionality all in one place under the auspices of convenience: demarcation
-turf wars and finding which modules do what.
-
-Packages that are grab-bags of features
-[waste a ton of time policing boundaries](https://github.com/jashkenas/underscore/search?q=special-case&ref=cmdform&type=Issues)
-about which new features belong and don't belong.
-There is no clear natural boundary of the problem domain in this kind of package
-about what the scope is, it's all
-[somebody's smug opinion](http://david.heinemeierhansson.com/2012/rails-is-omakase.html).
-
-Node, npm, and browserify are not that. They are avowedly ala-carte,
-participatory, and would rather celebrate disagreement and the dizzying
-proliferation of new ideas and approaches than try to clamp down in the name of
-conformity, standards, or "best practices".
-
-Nobody who needs to do gaussian blur ever thinks "hmm I guess I'll start checking
-generic mathematics, statistics, image processing, and utility libraries to see
-which one has gaussian blur in it. Was it stats2 or image-pack-utils or
-maths-extra or maybe underscore has that one?"
-No. None of this. Stop it. They `npm search gaussian` and they immediately see
-[ndarray-gaussian-filter](https://npmjs.org/package/ndarray-gaussian-filter) and
-it does exactly what they want and then they continue on with their actual
-problem instead of getting lost in the weeds of somebody's neglected grand
-utility fiefdom.
-
 # development
 
 ## source maps
@@ -423,8 +384,66 @@ apply to the local package for the same reasons.
 
 # finding good modules
 
-Here are some useful heuristics for finding good modules on npm that work in the
-browser:
+Here are [some useful heuristics](http://substack.net/finding_modules)
+for finding good modules on npm that work in the browser:
+
+* I can install it with npm
+
+* code snippet on the readme using require() - from a quick glance I should see
+how to integrate the library into what I'm presently working on
+
+* has a very clear, narrow idea about scope and purpose
+
+* knows when to delegate to other libraries - doesn't try to do too many things itself
+
+* written or maintained by authors whose opinions about software scope,
+modularity, and interfaces I generally agree with (often a faster shortcut
+than reading the code/docs very closely)
+
+* inspecting which modules depend on the library I'm evaluating - this is baked
+into the package page for modules published to npm
+
+Other metrics like number of stars on github, project activity, or a slick
+landing page, are not as reliable.
+
+## module philosophy
+
+People used to think that exporting a bunch of handy utility-style things would
+be the main way that programmers would consume code because that is the primary
+way of exporting and importing code on most other platforms and indeed still
+persists even on npm.
+
+However, this
+[kitchen-sink mentality](https://github.com/substack/node-mkdirp/issues/17)
+toward including a bunch of thematically-related but separable functionality
+into a single package appears to be an artifact for the difficulty of of
+publishing and discovery in a pre-github, pre-npm era.
+
+There are two other big problems with modules that try to export a bunch of
+functionality all in one place under the auspices of convenience: demarcation
+turf wars and finding which modules do what.
+
+Packages that are grab-bags of features
+[waste a ton of time policing boundaries](https://github.com/jashkenas/underscore/search?q=special-case&ref=cmdform&type=Issues)
+about which new features belong and don't belong.
+There is no clear natural boundary of the problem domain in this kind of package
+about what the scope is, it's all
+[somebody's smug opinion](http://david.heinemeierhansson.com/2012/rails-is-omakase.html).
+
+Node, npm, and browserify are not that. They are avowedly ala-carte,
+participatory, and would rather celebrate disagreement and the dizzying
+proliferation of new ideas and approaches than try to clamp down in the name of
+conformity, standards, or "best practices".
+
+Nobody who needs to do gaussian blur ever thinks "hmm I guess I'll start checking
+generic mathematics, statistics, image processing, and utility libraries to see
+which one has gaussian blur in it. Was it stats2 or image-pack-utils or
+maths-extra or maybe underscore has that one?"
+No. None of this. Stop it. They `npm search gaussian` and they immediately see
+[ndarray-gaussian-filter](https://npmjs.org/package/ndarray-gaussian-filter) and
+it does exactly what they want and then they continue on with their actual
+problem instead of getting lost in the weeds of somebody's neglected grand
+utility fiefdom.
 
 # organizing modules
 
