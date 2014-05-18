@@ -741,10 +741,15 @@ You can just add an exception with `!` for each of your internal application
 modules:
 
 ```
-node_modules
+node_modules/*
 !node_modules/foo
 !node_modules/bar
 ```
+
+Please note that you can't *unignore* a subdirectory,
+if the parent is already ignored. So instead of ignoring `node_modules`,
+you have to ignore every directory *inside* `node_modules` with the 
+`node_modules/*` trick, and then you can add your exceptions.
 
 Now anywhere in your application you will be able to `require('foo')` or
 `require('bar')` without having a very large and fragile relative path.
@@ -764,7 +769,7 @@ anywhere in your application.
 In your `.gitignore`, just add an exception for `node_modules/app`:
 
 ```
-node_modules
+node_modules/*
 !node_modules/app
 ```
 
