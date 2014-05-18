@@ -874,7 +874,7 @@ var mkdirp = require('mkdirp');
 
 exports.convert = convert;
 function convert (src) {
-    return src.replace(/beep/boop/g);
+    return src.replace(/beep/g, 'boop');
 }
 
 exports.write = function (src, dst, cb) {
