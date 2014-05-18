@@ -230,9 +230,8 @@ Just plop it into a single script tag in some html:
 </html>
 ```
 
-Bonus: if you put your script tag right before the `</body>`, you can use
-can access all of the dom elements on the page without waiting for a dom onready
-event.
+Bonus: if you put your script tag right before the `</body>`, you can use all of
+the dom elements on the page without waiting for a dom onready event.
 
 There are many more things you can do with bundling. Check out the bundling
 section elsewhere in this document.
