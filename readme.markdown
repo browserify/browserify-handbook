@@ -70,7 +70,8 @@ var foo = require('../foo.js');
 console.log(foo(4));
 ```
 
-or likewise for any other kind of relative path.
+or likewise for any other kind of relative path. Relative paths are always
+resolved with respect to the invoking file's location.
 
 Note that `require()` returned a function and we assigned that return value to a
 variable called `uniq`. We could have picked any other name and it would have
@@ -86,7 +87,159 @@ better as the number of modules in an application grows.
 
 ## exports
 
+To export a single thing from a file so that other files may import it, assign
+over the value at `module.exports`:
+
+``` js
+module.exports = function (n) {
+    return n * 111
+};
+```
+
+Now when some module `main.js` loads your `foo.js`, the return value of
+`require('./foo.js')` will be the exported function:
+
+``` js
+var foo = require('./foo.js');
+console.log(foo(5));
+```
+
+This program will print:
+
+```
+555
+```
+
+You can export any kind of value with `module.exports`, not just functions.
+
+For example, this is perfectly fine:
+
+``` js
+module.exports = 555
+```
+
+and so is this:
+
+``` js
+var numbers = [];
+for (var i = 0; i < 100; i++) numbers.push(i);
+
+module.exports = numbers;
+```
+
+There is another form of doing exports specifically for exporting items onto an
+object. Here, `exports` is used instead of `module.exports`:
+
+``` js
+exports.beep = function (n) { return n * 1000 }
+exports.boop = 555
+```
+
+This program is the same as:
+
+``` js
+module.exports.beep = function (n) { return n * 1000 }
+module.exports.boop = 555
+```
+
+because `module.exports` is the same as `exports` and is initially set to an
+empty object.
+
+Note however that you can't do:
+
+``` js
+// this doesn't work
+exports = function (n) { return n * 1000 }
+```
+
+because the export value lives on the `module` object, and so assigning a new
+value for `exports` instead of `module.exports` masks the original reference. 
+
+Instead if you are going to export a single item, always do:
+
+``` js
+// instead
+module.exports = function (n) { return n * 1000 }
+```
+
+Most of the time, you will want to export a single function or constructor with
+`module.exports` because it's usually best for a module to do one thing.
+
+The `exports` feature was originally the primary way of exporting functionality
+and `module.exports` was an afterthought, but `module.exports` proved to be much
+more useful in practice at being more direct, clear, and avoiding duplication.
+
+In the early days, this style used to be much more common:
+
+foo.js:
+
+``` js
+exports.foo = function (n) { return n * 111 }
+```
+
+main.js:
+
+``` js
+var foo = require('./foo.js');
+console.log(foo.foo(5));
+```
+
+but note that the `foo.foo` is a bit superfluous. Using `module.exports` it
+becomes more clear:
+
+foo.js:
+
+``` js
+module.exports = function (n) { return n * 111 }
+```
+
+main.js:
+
+``` js
+var foo = require('./foo.js');
+console.log(foo(5));
+```
+
 ## bundling for the browser
+
+## module philosophy
+
+People used to think that exporting a bunch of handy utility-style things would
+be the main way that programmers would consume code because that is the primary
+way of exporting and importing code on most other platforms and indeed still
+persists even on npm.
+
+However, this
+[kitchen-sink mentality](https://github.com/substack/node-mkdirp/issues/17)
+toward including a bunch of thematically-related but separable functionality
+into a single package appears to be an artifact for the difficulty of of
+publishing and discovery in a pre-github, pre-npm era.
+
+There are two other big problems with modules that try to export a bunch of
+functionality all in one place under the auspices of convenience: demarcation
+turf wars and finding which modules do what.
+
+Packages that are grab-bags of features
+[waste a ton of time policing boundaries](https://github.com/jashkenas/underscore/search?q=special-case&ref=cmdform&type=Issues)
+about which new features belong and don't belong.
+There is no clear natural boundary of the problem domain in this kind of package
+about what the scope is, it's all
+[somebody's smug opinion](http://david.heinemeierhansson.com/2012/rails-is-omakase.html).
+
+Node, npm, and browserify are not that. They are avowedly ala-carte,
+participatory, and would rather celebrate disagreement and the dizzying
+proliferation of new ideas and approaches than try to clamp down in the name of
+conformity, standards, or "best practices".
+
+Nobody who needs to do gaussian blur ever thinks "hmm I guess I'll start checking
+generic mathematics, statistics, image processing, and utility libraries to see
+which one has gaussian blur in it. Was it stats2 or image-pack-utils or
+maths-extra or maybe underscore has that one?"
+No. None of this. Stop it. They `npm search gaussian` and they immediately see
+[ndarray-gaussian-filter](https://npmjs.org/package/ndarray-gaussian-filter) and
+it does exactly what they want and then they continue on with their actual
+problem instead of getting lost in the weeds of somebody's neglected grand
+utility fiefdom.
 
 # development
 
