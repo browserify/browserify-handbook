@@ -10,7 +10,8 @@ browserify is a tool for compiling
 for the browser.
 
 You can use browserify to organize your code and use third-party libraries even
-if you don't use node itself in any other capacity except for bundling.
+if you don't use [node](http://nodejs.org) itself in any other capacity except
+for bundling and installing packages with npm.
 
 The module system that browserify uses is the same as node, so
 packages published to [npm](https://npmjs.org) that were originally intended for
@@ -24,11 +25,68 @@ front or backend alike.
 
 # node packaged modules
 
+Before we can dive too deeply into how to use browserify and how it works, it is
+important to first understand how the
+[node-flavored version](http://nodejs.org/docs/latest/api/modules.html)
+of the commonjs module system works.
+
 ## require
 
-### how require works
+In node, there is a `require()` function for loading code from other files.
 
-## module.exports
+If you install a module with [npm](https://npmjs.org):
+
+```
+npm install uniq
+```
+
+Then in a file `nums.js` we can `require('uniq')`:
+
+```
+var uniq = require('uniq');
+var nums = [ 5, 2, 1, 3, 2, 5, 4, 2, 0, 1 ];
+console.log(uniq(nums));
+```
+
+The output of this program when run with node is:
+
+```
+$ node nums.js
+[ 0, 1, 2, 3, 4, 5 ]
+```
+
+You can require relative files by requiring a string that starts with a `.`. For
+example, to load a file `foo.js` from `main.js`, in `main.js` you can do:
+
+``` js
+var foo = require('./foo.js');
+console.log(foo(4));
+```
+
+If `foo.js` was in the parent directory, you could use `../foo.js` instead:
+
+``` js
+var foo = require('../foo.js');
+console.log(foo(4));
+```
+
+or likewise for any other kind of relative path.
+
+Note that `require()` returned a function and we assigned that return value to a
+variable called `uniq`. We could have picked any other name and it would have
+worked the same. `require()` returns the exports of the module name that you
+specify.
+
+How `require()` works is unlike many other module systems where imports are akin
+to statements that expose themselves as globals or file-local lexicals with
+names declared in the module itself outside of your control. Under the node
+style of code import with `require()`, someone reading your program can easily
+tell where each piece of functionality came from. This approach scales much
+better as the number of modules in an application grows.
+
+## exports
+
+## bundling for the browser
 
 # development
 
@@ -282,6 +340,8 @@ node and browserify both support but discourage the use of `$NODE_PATH`.
 
 ## code coverage
 
+## testling-ci
+
 # bundling
 
 ## standalone
@@ -303,7 +363,7 @@ node-specific modules that are only used in some codepaths. For example, if a
 module requires a library that only works in node but for a specific chunk of
 the code:
 
-```
+``` js
 var fs = require('fs');
 var path = require('path');
 var mkdirp = require('mkdirp');
@@ -347,7 +407,7 @@ browserify --ignore foo
 
 To ignore `foo` from the api with some bundle instance `b` do:
 
-```
+``` js
 b.ignore('foo')
 ```
 
@@ -368,14 +428,14 @@ $ browserify -r jquery --standalone jquery > jquery-bundle.js
 
 then we want to just `require('jquery')` in a `main.js`:
 
-```
+``` js
 var $ = require('jquery');
 $(window).click(function () { document.body.bgColor = 'red' });
 ```
 
 defering to the jquery dist bundle so that we can write:
 
-```
+``` html
 <script src="jquery-bundle.js"></script>
 <script src="bundle.js"></script>
 ```
@@ -395,7 +455,7 @@ browserify --exclude foo
 
 To exclude `foo` from the api with some bundle instance `b` do:
 
-```
+``` js
 b.exclude('foo')
 ```
 
