@@ -512,6 +512,31 @@ inspector.
 
 ## writing your own
 
+Transforms implement a simple streaming interface. Here is a transform that
+replaces `$CWD` with the `process.cwd()`:
+
+``` js
+var through = require('through2');
+
+module.exports = function (file) {
+    return through(function (buf, enc, next) {
+        this.push(buf.toString('utf8').replace(/\$CWD/g, process.cwd());
+        next();
+    });
+};
+```
+
+The transform function fires for every `file` in the current package and returns
+a transform stream that performs the conversion. The stream is written to and by
+browserify with the original file contents and browserify reads from the stream
+to obtain the new contents.
+
+Simply save your transform to a file or make a package and then add it with
+`-t ./your_transform.js`.
+
+For more information about how streams work, check out the
+[stream handbook](https://github.com/substack/stream-handbook).
+
 ## global transforms
 
 # package.json
