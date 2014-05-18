@@ -202,6 +202,41 @@ console.log(foo(5));
 
 ## bundling for the browser
 
+To run a module in node, you've got to start from somewhere.
+
+In node you pass a file to the `node` command to run a file:
+
+```
+$ node robot.js
+beep boop
+```
+
+In browserify, you do this same thing, but instead of running the file, you
+generate a stream of concatenated javascript files on stdout that you can write
+to a file with the `>` operator:
+
+```
+$ browserify robot.js > bundle.js
+```
+
+Now `bundle.js` contains all the javascript that `robot.js` needs to work.
+Just plop it into a single script tag in some html:
+
+``` html
+<html>
+  <body>
+    <script src="bundle.js"></script>
+  </body>
+</html>
+```
+
+Bonus: if you put your script tag right before the `</body>`, you can use
+can access all of the dom elements on the page without waiting for a dom onready
+event.
+
+There are many more things you can do with bundling. Check out the bundling
+section elsewhere in this document.
+
 ## module philosophy
 
 People used to think that exporting a bunch of handy utility-style things would
