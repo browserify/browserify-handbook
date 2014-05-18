@@ -537,8 +537,6 @@ Simply save your transform to a file or make a package and then add it with
 For more information about how streams work, check out the
 [stream handbook](https://github.com/substack/stream-handbook).
 
-## global transforms
-
 # package.json
 
 ## browser field
@@ -803,13 +801,40 @@ node and browserify both support but discourage the use of `$NODE_PATH`.
 
 ## non-javascript assets
 
+There are many
+[browserify transforms](https://github.com/substack/node-browserify/wiki/browserify-transforms)
+you can use to do many things. Commonly, transforms are used to include
+non-javascript assets into bundle files.
+
 ### brfs
+
+One way of including any kind of asset that works in both node and the browser
+is brfs.
+
+brfs uses static analysis to compile the results of `fs.readFile()` and
+`fs.readFileSync()` calls down to source contents at compile time.
+
+For example, this `main.js`:
+
+``` js
+var fs = require('fs');
+var html = fs.readFileSync(__dirname + '/robot.html', 'utf8');
+console.log(html);
+```
+
+applied through brfs would become something like:
+
+```
+var fs = require('fs');
+var html = "<b>beep boop</b>";
+console.log(html);
+```
+
+when run through brfs.
 
 ### hbsify
 
 ### jadeify
-
-## publishing
 
 # testing in node and the browser
 
