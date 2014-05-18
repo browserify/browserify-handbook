@@ -792,7 +792,7 @@ Unlike most other platforms, using a shell-style array of path directories with
 `node_modules` directory.
 
 This is because your application is more tightly coupled to a runtime
-environemtn configuration so there are more moving parts and your application
+environment configuration so there are more moving parts and your application
 will only work when your environment is setup correctly.
 
 node and browserify both support but discourage the use of `$NODE_PATH`.
