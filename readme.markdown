@@ -447,6 +447,41 @@ with gulp and browserify.
 
 # builtins
 
+In order to make more npm modules originally written for node work in the
+browser, browserify provides many browser-specific implementations of node core
+libraries:
+
+* [assert](https://npmjs.org/package/assert)
+* [buffer](https://npmjs.org/package/buffer)
+* [console](https://npmjs.org/package/console-browserify)
+* [constants](https://npmjs.org/package/constants-browserify)
+* [crypto](https://npmjs.org/package/crypto-browserify)
+* [domain](https://npmjs.org/package/domain-browser)
+* [events](https://npmjs.org/package/events-browserify)
+* [http](https://npmjs.org/package/http-browserify)
+* [https](https://npmjs.org/package/https-browserify)
+* [os](https://npmjs.org/package/os-browserify)
+* [path](https://npmjs.org/package/path-browserify)
+* [punycode](https://npmjs.org/package/punycode)
+* [querystring](https://npmjs.org/package/querystring)
+* [stream](https://npmjs.org/package/stream-browserify)
+* [string_decoder](https://npmjs.org/package/string_decoder)
+* [timers](https://npmjs.org/package/timers-browserify)
+* [tty](https://npmjs.org/package/tty-browserify)
+* [url](https://npmjs.org/package/url)
+* [util](https://npmjs.org/package/util)
+* [vm](https://npmjs.org/package/vm-browserify)
+* [zlib](https://npmjs.org/package/browserify-zlib)
+
+events, stream, url, path, and querystring are particularly useful in a browser
+environment.
+
+Additionally, if browserify detects the use of `Buffer`, `process`, `global`,
+`__filename`, or `__dirname`, it will include a browser-appropriate definition.
+
+So even if a module does a lot of buffer and stream operations, it will probably
+just work in the browser, so long as it doesn't do any server IO.
+
 # transforms
 
 ## using from the command-line
