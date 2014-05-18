@@ -162,6 +162,22 @@ Instead if you are going to export a single item, always do:
 module.exports = function (n) { return n * 1000 }
 ```
 
+If you're still confused, try to understand how modules work in
+the background:
+
+``` js
+var module = {
+  exports: {}
+};
+
+// If you require a module, it's basically wrapped in a function
+(function(module, exports) {
+  exports = function (n) { return n * 1000 };
+}(module, module.exports))
+
+console.log(module.exports); // it's still an empty object :(
+```
+
 Most of the time, you will want to export a single function or constructor with
 `module.exports` because it's usually best for a module to do one thing.
 
