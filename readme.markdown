@@ -1005,12 +1005,48 @@ Widget.prototype.setMessage = function (msg) {
 If setting element attributes and content gets too verbose, check out
 [hyperglue](https://npmjs.org/package/hyperglue).
 
+Now finally, we can toss our `widget.js` and `widget.html` into
+`node_modules/app-widget`. Since our widget uses the
+[brfs](https://npmjs.org/package/brfs) transform, we can create a `package.json`
+with:
+
+``` json
+{
+  "name": "app-widget",
+  "version": "1.0.0",
+  "private": true,
+  "browserify": {
+    "transform": [ "brfs" ]
+  },
+  "dependencies": {
+    "brfs": "^1.1.1",
+    "inherits": "^2.0.1"
+  }
+}
+```
+
+And now whenever we `require('app-widget')` from anywhere in our application,
+brfs will be applied to our `widget.js` automatically!
+Our widget can even maintain its own dependencies. This way we can update
+dependencies in one widgets without worrying about breaking changes cascading
+over into other widgets.
+
+Make sure to add an exclusion in your `.gitignore` for
+`node_modules/app-widget`:
+
+```
+node_modules/*
+!node_modules/app-widget
+```
+
 You can read more about [shared rendering in node and the
 browser](http://substack.net/shared_rendering_in_node_and_the_browser) if you
 want to learn about sharing rendering logic between node and the browser using
 browserify and some streaming html libraries.
 
 # testing in node and the browser
+
+
 
 ## tape
 
