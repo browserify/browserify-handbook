@@ -296,15 +296,17 @@ It can be difficult to refactor or maintain applications built this way.
 On the plus side, all browsers natively support this approach and no server-side
 tooling is required.
 
-This approach tends to be very slow since each `<script>` tag initiates a
-new round-trip http request.
+This approach may be slower since each `<script>` tag initiates a new round-trip
+http request.
 
 ### concatenate
 
 Instead of window globals, all the scripts are concatenated beforehand on the
-server. The code is still order-sensitive and difficult to maintain, but loads
-much faster because only a single http request for a single `<script>` tag needs
-to execute.
+server. The code is still order-sensitive and difficult to maintain. However,
+a concatenated file will help save a few http packets, since only a single http
+request for a single `<script>` tag needs to execute.  Also, a singe GZipped
+file will likely be smaller than the sum of several separate files.  Both of
+these optimizations will help save precious downloading time.
 
 Without source maps, exceptions thrown will have offsets that can't be easily
 mapped back to their original files.
