@@ -797,8 +797,6 @@ will only work when your environment is setup correctly.
 
 node and browserify both support but discourage the use of `$NODE_PATH`.
 
-## reusable components
-
 ## non-javascript assets
 
 There are many
@@ -835,6 +833,162 @@ when run through brfs.
 ### hbsify
 
 ### jadeify
+
+### reactify
+
+## reusable components
+
+Putting these ideas about code organization together, we can build a reusable UI
+component that we can reuse across our application or in other applications.
+
+Here is a bare-bones example of an empty widget module:
+
+``` js
+module.exports = Widget;
+
+function Widget (opts) {
+    if (!(this instanceof Widget)) return new Widget(opts);
+    this.element = document.createElement('div');
+}
+
+Widget.prototype.appendTo = function (target) {
+    if (typeof target === 'string') target = document.querySelector(target);
+    target.appendChild(this.element);
+};
+```
+
+Handy javascript constructor tip: you can include a `this instanceof Widget`
+check like above to let people consume your module with `new Widget` or
+`Widget()`. It's nice because it hides an implementation detail from your API
+and you still get the performance benefits and indentation wins of using
+prototypes.
+
+To use this widget, just use `require()` to load the widget file, instantiate
+it, and then call `.appendTo()` with a css selector string or a dom element.
+
+Like this:
+
+``` js
+var Widget = require('./widget.js');
+var w = Widget();
+w.appendTo('#container');
+```
+
+and now your widget will be appended to the DOM.
+
+Creating HTML elements procedurally is fine for very simple content but gets
+very verbose and unclear for anything bigger. Luckily there are many transforms
+available to ease importing HTML into your javascript modules.
+
+Let's extend our widget example using [brfs](https://npmjs.org/package/brfs). We
+can also use [domify](https://npmjs.org/package/domify) to turn the string that
+`fs.readFileSync()` returns into an html dom element:
+
+``` js
+var fs = require('fs');
+var domify = require('domify');
+
+var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+
+module.exports = Widget;
+
+function Widget (opts) {
+    if (!(this instanceof Widget)) return new Widget(opts);
+    this.element = domify(html);
+}
+
+Widget.prototype.appendTo = function (target) {
+    if (typeof target === 'string') target = document.querySelector(target);
+    target.appendChild(this.element);
+};
+```
+
+and now our widget will load a `widget.html`, so let's make one:
+
+``` html
+<div class="widget">
+  <h1 class="name"></h1>
+  <div class="msg"></div>
+</div>
+```
+
+It's often useful to emit events. Here's how we can emit events using the
+built-in `events` module and the [inherits](https://npmjs.org/package/inherits)
+module:
+
+``` js
+var fs = require('fs');
+var domify = require('domify');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
+
+var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+
+inherits(Widget, EventEmitter);
+module.exports = Widget;
+
+function Widget (opts) {
+    if (!(this instanceof Widget)) return new Widget(opts);
+    this.element = domify(html);
+}
+
+Widget.prototype.appendTo = function (target) {
+    if (typeof target === 'string') target = document.querySelector(target);
+    target.appendChild(this.element);
+    this.emit('append', target);
+};
+```
+
+Now we can listen for `'append'` events on our widget instance:
+
+``` js
+var Widget = require('./widget.js');
+var w = Widget();
+w.on('append', function (target) {
+    console.log('appended to: ' + target.outerHTML);
+});
+w.appendTo('#container');
+```
+
+We can add more methods to our widget to set elements on the html:
+
+``` js
+var fs = require('fs');
+var domify = require('domify');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
+
+var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+
+inherits(Widget, EventEmitter);
+module.exports = Widget;
+
+function Widget (opts) {
+    if (!(this instanceof Widget)) return new Widget(opts);
+    this.element = domify(html);
+}
+
+Widget.prototype.appendTo = function (target) {
+    if (typeof target === 'string') target = document.querySelector(target);
+    target.appendChild(this.element);
+};
+
+Widget.prototype.setName = function (name) {
+    this.element.querySelector('.name').textContent = name;
+}
+
+Widget.prototype.setMessage = function (msg) {
+    this.element.querySelector('.msg').textContent = msg;
+}
+```
+
+If setting element attributes and content gets too verbose, check out
+[hyperglue](https://npmjs.org/package/hyperglue).
+
+You can read more about [shared rendering in node and the
+browser](http://substack.net/shared_rendering_in_node_and_the_browser) if you
+want to learn about sharing rendering logic between node and the browser using
+browserify and some streaming html libraries.
 
 # testing in node and the browser
 
