@@ -162,6 +162,22 @@ Instead if you are going to export a single item, always do:
 module.exports = function (n) { return n * 1000 }
 ```
 
+If you're still confused, try to understand how modules work in
+the background:
+
+``` js
+var module = {
+  exports: {}
+};
+
+// If you require a module, it's basically wrapped in a function
+(function(module, exports) {
+  exports = function (n) { return n * 1000 };
+}(module, module.exports))
+
+console.log(module.exports); // it's still an empty object :(
+```
+
 Most of the time, you will want to export a single function or constructor with
 `module.exports` because it's usually best for a module to do one thing.
 
@@ -230,9 +246,8 @@ Just plop it into a single script tag in some html:
 </html>
 ```
 
-Bonus: if you put your script tag right before the `</body>`, you can use
-can access all of the dom elements on the page without waiting for a dom onready
-event.
+Bonus: if you put your script tag right before the `</body>`, you can use all of
+the dom elements on the page without waiting for a dom onready event.
 
 There are many more things you can do with bundling. Check out the bundling
 section elsewhere in this document.
@@ -423,7 +438,7 @@ var http = require('http');
 
 http.createServer(function (req, res) {
     if (req.url === '/bundle.js') {
-        res.setHeader('content-type', 'text/javascript');
+        res.setHeader('content-type', 'application/javascript');
         var b = browserify(__dirname + '/main.js').bundle();
         b.on('error', console.error);
         b.pipe(res);
@@ -741,10 +756,15 @@ You can just add an exception with `!` for each of your internal application
 modules:
 
 ```
-node_modules
+node_modules/*
 !node_modules/foo
 !node_modules/bar
 ```
+
+Please note that you can't *unignore* a subdirectory,
+if the parent is already ignored. So instead of ignoring `node_modules`,
+you have to ignore every directory *inside* `node_modules` with the 
+`node_modules/*` trick, and then you can add your exceptions.
 
 Now anywhere in your application you will be able to `require('foo')` or
 `require('bar')` without having a very large and fragile relative path.
@@ -764,7 +784,7 @@ anywhere in your application.
 In your `.gitignore`, just add an exception for `node_modules/app`:
 
 ```
-node_modules
+node_modules/*
 !node_modules/app
 ```
 
