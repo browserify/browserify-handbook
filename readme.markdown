@@ -497,6 +497,135 @@ Additionally, if browserify detects the use of `Buffer`, `process`, `global`,
 So even if a module does a lot of buffer and stream operations, it will probably
 just work in the browser, so long as it doesn't do any server IO.
 
+If you haven't done any node before, here are some examples of what each of
+those globals can do. Note too that these globals are only actually defined when
+you or some module you depend on uses them.
+
+## [Buffer](http://nodejs.org/docs/latest/api/buffer.html)
+
+In node all the file and network APIs deal with Buffer chunks. In browserify the
+Buffer API is provided by [buffer](https://www.npmjs.org/package/buffer), which
+uses augmented typed arrays in a very performant way with fallbacks for old
+browsers.
+
+Here's an example of using `Buffer` to convert a base64 string to hex:
+
+```
+var buf = Buffer('YmVlcCBib29w', 'base64');
+var hex = buf.toString('hex');
+console.log(hex);
+```
+
+This example will print:
+
+```
+6265657020626f6f70
+```
+
+## [process](http://nodejs.org/docs/latest/api/process.html#process_process)
+
+In node, `process` is a special object that handles information and control for
+the running process such as environment, signals, and standard IO streams.
+
+Of particular consequence is the `process.nextTick()` implementation that
+interfaces with the event loop.
+
+In browserify the process implementation is handled by the
+[process module](https://www.npmjs.org/package/process) which just provides
+`process.nextTick()` and little else.
+
+Here's what `process.nextTick()` does:
+
+```
+setTimeout(function () {
+    console.log('third');
+}, 0);
+
+process.nextTick(function () {
+    console.log('second');
+});
+
+console.log('first');
+```
+
+This script will output:
+
+```
+first
+second
+third
+```
+
+`process.nextTick(fn)` is like `setTimeout(fn, 0)`, but faster because
+`setTimeout` is artificially slower in javascript engines for compatibility reasons.
+
+## [global](http://nodejs.org/docs/latest/api/all.html#all_global)
+
+In node, `global` is the top-level scope where global variables are attached
+similar to how `window` works in the browser. In browserify, `global` is just an
+alias for the `window` object.
+
+## [__filename](http://nodejs.org/docs/latest/api/all.html#all_filename)
+
+`__filename` is the path to the current file, which is different for each file.
+
+To prevent disclosing system path information, this path is rooted at the
+`opts.basedir` that you pass to `browserify()`, which defaults to the
+[current working directory](https://en.wikipedia.org/wiki/Current_working_directory).
+
+If we have a `main.js`:
+
+``` js
+var bar = require('./foo/bar.js');
+
+console.log('here in main.js, __filename is:', __filename);
+bar();
+```
+
+and a `foo/bar.js`:
+
+``` js
+module.exports = function () {
+    console.log('here in foo/bar.js, __filename is:', __filename);
+};
+```
+
+then running browserify starting at `main.js` gives this output:
+
+```
+$ browserify main.js | node
+here in main.js, __filename is: /main.js
+here in foo/bar.js, __filename is: /foo/bar.js
+```
+
+## [__dirname](http://nodejs.org/docs/latest/api/all.html#all_dirname)
+
+`__dirname` is the directory of the current file. Like `__filename`, `__dirname`
+is rooted at the `opts.basedir`.
+
+Here's an example of how `__dirname` works:
+
+main.js:
+
+``` js
+require('./x/y/z/abc.js');
+console.log('in main.js __dirname=' + __dirname);
+```
+
+x/y/z/abc.js:
+
+``` js
+console.log('in abc.js, __dirname=' + __dirname);
+```
+
+output:
+
+```
+$ browserify main.js | node
+in abc.js, __dirname=/x/y/z
+in main.js __dirname=/
+```
+
 # transforms
 
 Instead of browserify baking in support for everything, it supports a flexible
@@ -1046,11 +1175,14 @@ browserify and some streaming html libraries.
 
 # testing in node and the browser
 
+## testing libraries
 
+### tape
 
-## tape
+### assert
 
-## mocha
+### mocha
+
 
 ## code coverage
 
