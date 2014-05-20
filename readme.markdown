@@ -346,7 +346,7 @@ your development and production environments will be much more similar and less
 fragile. The CJS syntax is nicer and the ecosystem is exploding because of node
 and npm.
 
-You can seemlessly share code between node and the browser. You just need a
+You can seamlessly share code between node and the browser. You just need a
 build step and some tooling for source maps and auto-rebuilding.
 
 Plus, we can use node's module lookup algorithms to save us from version
