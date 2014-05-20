@@ -1175,11 +1175,275 @@ browserify and some streaming html libraries.
 
 # testing in node and the browser
 
+Testing modular code is very easy! One of the biggest benefits of modularity is
+that your interfaces become much easier to instantiate in isolation and so it's
+easy to make automated tests.
+
+Unfortunately, few testing libraries play nicely out of the box with modules and
+tend to roll their own idiosyncratic interfaces with implicit globals and obtuse
+flow control that get in the way of a clean design with good separation.
+
+People also make a huge fuss about "mocking" but it's usually not necessary if
+you design your modules with testing in mind. Keeping IO separate from your
+algorithms, carefully restricting the scope of your module, and accepting
+callback parameters for different interfaces can all make your code much easier
+to test.
+
+For example, if you have a library that does both IO and speaks a protocol,
+[consider separating the IO layer from the
+protocol](https://www.youtube.com/watch?v=g5ewQEuXjsQ#t=12m30)
+using an interface like [streams](https://github.com/substack/stream-handbook).
+
+Your code will be easier to test and reusable in different contexts that you
+didn't initially envision. This is a recurring theme of testing: if your code is
+hard to test, it is probably not modular enough or contains the wrong balance of
+abstractions. Testing should not be an afterthought, it should inform your
+whole design and it will help you to write better interfaces.
+
 ## testing libraries
 
-### tape
+### [tape](https://npmjs.org/package/tape)
+
+Tape was specifically designed from the start to work well in both node and
+browserify. Suppose we have an `index.js` with an async interface:
+
+``` js
+module.exports = function (x, cb) {
+    setTimeout(function () {
+        cb(x * 100);
+    }, 1000);
+};
+```
+
+Here's how we can test this module using [tape](https://npmjs.org/package/tape). 
+Let's put this file in `test/beep.js`:
+
+``` js
+var test = require('tape');
+var hundreder = require('../');
+
+test('beep', function (t) {
+    t.plan(1);
+    
+    hundreder(5, function (n) {
+        t.equal(n, 500, '5*100 === 500');
+    });
+});
+```
+
+Because the test file lives in `test/`, we can require the `index.js` in the
+parent directory by doing `require('../')`. `index.js` is the default place that
+node and browserify look for a module if there is no package.json in that
+directory with a `main` field.
+
+We can `require()` tape like any other library after it has been installed with
+`npm install tape`.
+
+The string `'beep'` is an optional name for the test.
+The 3rd argument to `t.equal()` is a completely optional description.
+
+The `t.plan(1)` says that we expect 1 assertion. If there are not enough
+assertions or too many, the test will fail. An assertion is a comparison
+like `t.equal()`. tape has assertion primitives for:
+
+* t.equal(a, b) - compare a and b strictly with `===`
+* t.deepEqual(a, b) - compare a and b recursively
+* t.ok(x) - fail if `x` is not truthy
+
+and more! You can always add an additional description argument.
+
+Running our module is very simple! To run the module in node, just run
+`node test/beep.js`:
+
+```
+$ node test/beep.js
+TAP version 13
+# beep
+ok 1 5*100 === 500
+
+1..1
+# tests 1
+# pass  1
+
+# ok
+```
+
+The output is printed to stdout and the exit code is 0.
+
+To run our code in the browser, just do:
+
+```
+$ browserify test/beep.js > bundle.js
+```
+
+then plop `bundle.js` into a `<script>` tag:
+
+```
+<script src="bundle.js"></script>
+```
+
+and load that html in a browser. The output will be in the debug console which
+you can open with F12, ctrl-shift-j, or ctrl-shift-k depending on the browser.
+
+This is a bit cumbersome to run our tests in a browser, but you can install the
+`testling` command to help. First do:
+
+```
+npm install -g testling
+```
+
+And now just do `browserify test/beep.js | testling`:
+
+```
+$ browserify test/beep.js | testling
+
+TAP version 13
+# beep
+ok 1 5*100 === 500
+
+1..1
+# tests 1
+# pass  1
+
+# ok
+```
+
+`testling` will launch a real browser headlessly on your system to run the tests.
+
+Now suppose we want to add another file, `test/boop.js`:
+
+``` js
+var test = require('tape');
+var hundreder = require('../');
+
+test('fraction', function (t) {
+    t.plan(1);
+
+    hundreder(1/20, function (n) {
+        t.equal(n, 5, '1/20th of 100');
+    });
+});
+
+test('negative', function (t) {
+    t.plan(1);
+
+    hundreder(-3, function (n) {
+        t.equal(n, -300, 'negative number');
+    });
+});
+```
+
+Here our test has 2 `test()` blocks. The second test block won't start to
+execute until the first is completely finished, even though it is asynchronous.
+You can even nest test blocks by using `t.test()`.
+
+We can run `test/boop.js` with node directly as with `test/beep.js`, but if we
+want to run both tests, there is a minimal command-runner we can use that comes
+with tape. To get the `tape` command do:
+
+```
+npm install -g tape
+```
+
+and now you can run:
+
+```
+$ tape test/*.js
+TAP version 13
+# beep
+ok 1 5*100 === 500
+# fraction
+ok 2 1/20th of 100
+# negative
+ok 3 negative number
+
+1..3
+# tests 3
+# pass  3
+
+# ok
+```
+
+and you can just pass `test/*.js` to browserify to run your tests in the
+browser:
+
+```
+$ browserify test/* | testling
+
+TAP version 13
+# beep
+ok 1 5*100 === 500
+# fraction
+ok 2 1/20th of 100
+# negative
+ok 3 negative number
+
+1..3
+# tests 3
+# pass  3
+
+# ok
+```
+
+Putting together all these steps, we can configure `package.json` with a test
+script:
+
+``` json
+{
+  "name": "hundreder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "tape": "^2.13.1",
+    "testling": "^1.6.1"
+  },
+  "scripts": {
+    "test": "tape test/*.js",
+    "test-browser": "browserify test/*.js | testlingify"
+  }
+}
+```
+
+Now you can do `npm test` to run the tests in node and `npm run test-browser` to
+run the tests in the browser. You don't need to worry about installing commands
+with `-g` when you use `npm run`: npm automatically sets up the `$PATH` for all
+packages installed locally to the project.
+
+If you have some tests that only run in node and some tests that only run in the
+browser, you could have subdirectories in `test/` such as `test/server` and
+`test/browser` with the tests that run both places just in `test/`. Then you
+could just add the relevant directory to the globs:
+
+``` json
+{
+  "name": "hundreder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "tape": "^2.13.1",
+    "testling": "^1.6.1"
+  },
+  "scripts": {
+    "test": "tape test/*.js test/server/*.js",
+    "test-browser": "browserify test/*.js test/browser/*.js | testlingify"
+  }
+}
+```
+
+and now server-specific and browser-specific tests will be run in addition to
+the common tests.
+
+If you want something even slicker, check out
+[prova](https://www.npmjs.org/package/prova) once you have gotten the basic
+concepts.
 
 ### assert
+
+The core assert module is a fine way to write simple tests too, although it can
+sometimes be tricky to ensure that the correct number of callbacks have fired.
+
+You can solve that problem with tools like
+[macgyver](https://www.npmjs.org/package/macgyver) but it is appropriately DIY.
 
 ### mocha
 
