@@ -472,7 +472,7 @@ libraries:
 * [constants](https://npmjs.org/package/constants-browserify)
 * [crypto](https://npmjs.org/package/crypto-browserify)
 * [domain](https://npmjs.org/package/domain-browser)
-* [events](https://npmjs.org/package/events-browserify)
+* [events](https://npmjs.org/package/events)
 * [http](https://npmjs.org/package/http-browserify)
 * [https](https://npmjs.org/package/https-browserify)
 * [os](https://npmjs.org/package/os-browserify)
