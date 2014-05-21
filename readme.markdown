@@ -1144,6 +1144,7 @@ with:
   "name": "app-widget",
   "version": "1.0.0",
   "private": true,
+  "main": "widget.js",
   "browserify": {
     "transform": [ "brfs" ]
   },
