@@ -405,7 +405,7 @@ during development do `npm run watch`.
 
 [Learn more about `npm run`](http://substack.net/task_automation_with_npm_run).
 
-### beefy
+### [beefy](https://www.npmjs.org/package/beefy)
 
 If you would rather spin up a web server that automatically recompiles your code
 when you modify it, check out [beefy](http://didact.us/beefy/).
