@@ -460,6 +460,10 @@ Here is
 [a guide for getting started](http://viget.com/extend/gulp-browserify-starter-faq)
 with gulp and browserify.
 
+Here is a guide on how to [make browserify builds fast with watchify using
+gulp](https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md)
+from the official gulp recipes.
+
 # builtins
 
 In order to make more npm modules originally written for node work in the
