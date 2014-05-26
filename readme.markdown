@@ -273,6 +273,76 @@ everything your application needs to work with a pretty negligible overhead.
 For more details about how browserify works, check out the compiler pipeline
 section of this document.
 
+## how node_modules works
+
+node has a clever algorithm for resolving modules that is unique among rival
+platforms.
+
+Instead of resolving packages from an array of system search paths like how
+`$PATH` works on the command line, node's mechanism is local by default.
+
+If you `require('./foo.js')` from `/beep/boop/bar.js`, node will
+look for `./foo.js` in `/beep/boop/foo.js`. Paths that start with a `./` or
+`../` are always local to the file that calls `require()`.
+
+If however you require a non-relative name such as `require('xyz')` from
+`/beep/boop/foo.js`, node searches these paths in order, stopping at the first
+match and raising an error if nothing is found:
+
+```
+/beep/boop/node_modules/xyz
+/beep/node_modules/xyz
+/node_modules/xyz
+```
+
+For each `xyz` directory that exists, node will first look for a
+`xyz/package.json` to see if a `"main"` field exists. The `"main"` field defines
+which file should take charge if you `require()` the directory path.
+
+For example, if `/beep/node_modules/xyz` is the first match and
+`/beep/node_modules/xyz/package.json` has:
+
+```
+{
+  "name": "xyz",
+  "version": "1.2.3",
+  "main": "lib/abc.js"
+}
+```
+
+then the exports from `/beep/node_modules/xyz/lib/abc.js` will be returned by
+`require('xyz')`.
+
+If there is no `package.json` or no `"main"` field, `index.js` is assumed:
+
+```
+/beep/node_modules/xyz/index.js
+```
+
+node also has a mechanism for searching an array of paths, but this mechanism is
+deprecated and you should be using `node_modules/` unless you have a very good
+reason not to.
+
+The great thing about node's algorithm and how npm installs packages is that you
+can never have a version conflict, unlike most every other platform. npm
+installs the dependencies of each package into `node_modules`.
+
+Each library gets its own local `node_modules/` directory where its dependencies
+are stored and each dependency's dependencies has its own `node_modules/`
+directory, recursively all the way down.
+
+This means that packages can successfully use different versions of libraries in
+the same application, which greatly decreases the coordination overhead
+necessary to iterate on APIs. This feature is very important for an ecosystem
+like npm where there is no central authority to manage how packages are
+published and organized. Everyone may simply publish as they see fit and not
+worry about how their dependency version choices might impact other dependencies
+included in the same application.
+
+You can leverage how `node_modules/` works to organize your own local
+application modules too. See the `avoiding ../../../../../../..` section for
+more.
+
 ## why concatenate
 
 Browserify is a build step that runs on the server. It generates a single bundle
