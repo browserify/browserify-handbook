@@ -914,7 +914,7 @@ functionality all in one place under the auspices of convenience: demarcation
 turf wars and finding which modules do what.
 
 Packages that are grab-bags of features
-[waste a ton of time policing boundaries](https://github.com/jashkenas/underscore/search?q=special-case&ref=cmdform&type=Issues)
+[waste a ton of time policing boundaries](https://github.com/jashkenas/underscore/search?q=%22special-case%22&ref=cmdform&type=Issues)
 about which new features belong and don't belong.
 There is no clear natural boundary of the problem domain in this kind of package
 about what the scope is, it's all
