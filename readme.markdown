@@ -1488,6 +1488,32 @@ inspect which files are being included to scan for duplicates.
 
 ## standalone
 
+You can generate UMD bundles with `--standalone` that will work in node, the
+browser with globals, and AMD environments.
+
+Just add `--standalone NAME` to your bundle command:
+
+```
+$ browserify foo.js --standalone xyz > bundle.js
+```
+
+This command will export the contents of `foo.js` under the external module name
+`xyz`. If a module system is detected in the host environment, it will be used.
+Otherwise a window global named `xyz` will be exported.
+
+You can use dot-syntax to specify a namespace hierarchy:
+
+```
+$ browserify foo.js --standalone foo.bar.baz > bundle.js
+```
+
+If there is already a `foo` or a `foo.bar` in the host environment in window
+global mode, browserify will attach its exports onto those objects. The AMD and
+`module.exports` modules will behave the same.
+
+Note however that standalone only works with a single entry or directly-required
+file.
+
 ## external bundles
 
 ## ignoring and excluding
