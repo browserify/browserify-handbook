@@ -351,7 +351,9 @@ build step and some tooling for source maps and auto-rebuilding.
 
 Plus, we can use node's module lookup algorithms to save us from version
 mismatch insanity so that we can have multiple conflicting versions of different
-required packages in the same application and everything will still work.
+required packages in the same application and everything will still work. To
+save bytes down the wire you can dedupe, which is covered elsewhere in this
+document.
 
 # development
 
@@ -1457,6 +1459,32 @@ You can solve that problem with tools like
 ## testling-ci
 
 # bundling
+
+This section covers bundling in more detail.
+
+Bundling is the step where starting from the entry files, all the source files
+in the dependency graph are walked and packed into a single output file.
+
+## saving bytes
+
+One of the first things you'll want to tweak is how the files that npm installs
+are placed on disk to avoid duplicates.
+
+When you do a clean install in a directory, npm will ordinarily factor out
+similar versions into the topmost directory where 2 modules share a dependency.
+However, as you install more packages, new packages will not be factored out
+automatically. You can however use the `npm dedupe` command to factor out
+packages for an already-installed set of packages in `node_modules/`. You could
+also remove `node_modules/` and install from scratch again if problems with
+duplicates persist.
+
+browserify will not include the same exact file twice, but compatible versions
+may differ slightly. browserify is also not version-aware, it will include the
+versions of packages exactly as they are laid out in `node_modules/` according
+to the `require()` algorithm that node uses.
+
+You can use the `browserify --list` and `browserify --deps` commands to further
+inspect which files are being included to scan for duplicates.
 
 ## standalone
 
