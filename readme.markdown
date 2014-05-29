@@ -1047,13 +1047,45 @@ console.log(html);
 
 applied through brfs would become something like:
 
-```
+``` js
 var fs = require('fs');
 var html = "<b>beep boop</b>";
 console.log(html);
 ```
 
 when run through brfs.
+
+This is handy because you can reuse the exact same code in node and the browser,
+which makes sharing modules and testing much simpler.
+
+`fs.readFile()` and `fs.readFileSync()` accept the same arguments as in node,
+which makes including inline image assets as base64-encoded strings very easy:
+
+``` js
+var fs = require('fs');
+var imdata = fs.readFileSync(__dirname + '/image.png', 'base64');
+var img = document.createElement('img');
+img.setAttribute('src', 'data:image/png;base64,' + imdata);
+document.body.appendChild(img);
+```
+
+If you have some css you want to inline into your bundle, you can do that too
+with the assistence of a module such as
+[insert-css](https://npmjs.org/package/insert-css):
+
+``` js
+var fs = require('fs');
+var insertStyle = require('insert-css');
+
+var css = fs.readFileSync(__dirname + '/style.css', 'utf8');
+insertStyle(css);
+```
+
+Inserting css this way works fine for small reusable modules that you distribute
+with npm because they are fully-contained, but if you want a more wholistic
+approach to asset management using browserify, check out 
+[atomify](https://www.npmjs.org/package/atomify) and
+[parcelify](https://www.npmjs.org/package/parcelify).
 
 ### hbsify
 
