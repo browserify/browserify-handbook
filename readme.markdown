@@ -319,6 +319,18 @@ If there is no `package.json` or no `"main"` field, `index.js` is assumed:
 /beep/node_modules/xyz/index.js
 ```
 
+If you need to, you can reach into a package to pick out a particular file. For
+example, to load the `lib/clone.js` file from the `dat` package, just do:
+
+```
+var clone = require('dat/lib/clone.js')
+```
+
+The recursive node_modules resolution will find the first `dat` package up the
+directory hierarchy, then the `lib/clone.js` file will be resolved from there.
+This `require('dat/lib/clone.js')` approach will work from any location where
+you can `require('dat')`.
+
 node also has a mechanism for searching an array of paths, but this mechanism is
 deprecated and you should be using `node_modules/` unless you have a very good
 reason not to.
