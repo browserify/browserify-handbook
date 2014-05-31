@@ -489,7 +489,7 @@ during development do `npm run watch`.
 
 [Learn more about `npm run`](http://substack.net/task_automation_with_npm_run).
 
-### beefy
+### [beefy](https://www.npmjs.org/package/beefy)
 
 If you would rather spin up a web server that automatically recompiles your code
 when you modify it, check out [beefy](http://didact.us/beefy/).
@@ -918,7 +918,7 @@ persists even on npm.
 However, this
 [kitchen-sink mentality](https://github.com/substack/node-mkdirp/issues/17)
 toward including a bunch of thematically-related but separable functionality
-into a single package appears to be an artifact for the difficulty of of
+into a single package appears to be an artifact for the difficulty of
 publishing and discovery in a pre-github, pre-npm era.
 
 There are two other big problems with modules that try to export a bunch of
