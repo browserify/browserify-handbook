@@ -1109,7 +1109,7 @@ node and browserify both support but discourage the use of `$NODE_PATH`.
 ## non-javascript assets
 
 There are many
-[browserify transforms](https://github.com/substack/node-browserify/wiki/browserify-transforms)
+[browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms)
 you can use to do many things. Commonly, transforms are used to include
 non-javascript assets into bundle files.
 
