@@ -85,7 +85,7 @@ npm install -g browserify-handbook
 ```
 
 Now you will have a `browserify-handbook` command that will open this readme
-file in your `$PAGER`. Otherwise, you many continue reading this document as you
+file in your `$PAGER`. Otherwise, you may continue reading this document as you
 are presently doing.
 
 # node packaged modules
