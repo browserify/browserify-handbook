@@ -1005,6 +1005,13 @@ node_modules/*
 !node_modules/app
 ```
 
+If your application had transforms configured in package.json, you'll need to
+create a separate package.json with its own transform field in your
+`node_modules/foo` or `node_modules/app/foo` component directory because
+transforms don't apply across module boundaries. This will make your modules
+more robust against configuration changes in your application and it will be
+easier to independently reuse the packages outside of your application.
+
 ### symlink
 
 Another handy trick if you are working on an application where you can make
