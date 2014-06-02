@@ -27,6 +27,7 @@ front or backend alike.
 
 - [introduction](#introduction)
 - [table of contents](#table-of-contents)
+- [node packaged manuscript](#node-packaged-manuscript)
 - [node packaged modules](#node-packaged-modules)
   - [require](#require)
   - [exports](#exports)
@@ -74,6 +75,18 @@ front or backend alike.
   - [build your own browserify](#build-your-own-browserify)
   - [browser-unpack](#browser-unpack)
   - [plugins](#plugins)
+
+# node packaged manuscript
+
+You can install this handbook with npm, appropriately enough. Just do:
+
+```
+npm install -g browserify-handbook
+```
+
+Now you will have a `browserify-handbook` command that will open this readme
+file in your `$PAGER`. Otherwise, you many continue reading this document as you
+are presently doing.
 
 # node packaged modules
 

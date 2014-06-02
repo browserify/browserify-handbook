@@ -18,5 +18,11 @@
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
-  "license": "cc-by-3.0"
+  "license": "cc-by-3.0",
+  "dependencies": {
+    "default-pager": "^1.0.1"
+  },
+  "bin": {
+    "browserify-handbook": "bin/cmd.js"
+  }
 }
