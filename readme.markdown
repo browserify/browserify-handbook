@@ -23,6 +23,58 @@ packages on npm are intended for use in just the browser.
 [npm is for all javascript](http://maxogden.com/node-packaged-modules.html),
 front or backend alike.
 
+# table of contents
+
+- [introduction](#introduction)
+- [table of contents](#table-of-contents)
+- [node packaged modules](#node-packaged-modules)
+  - [require](#require)
+  - [exports](#exports)
+  - [bundling for the browser](#bundling-for-the-browser)
+  - [how browserify works](#how-browserify-works)
+  - [how node_modules works](#how-node_modules-works)
+  - [why concatenate](#why-concatenate)
+- [development](#development)
+  - [source maps](#source-maps)
+  - [auto-recompile](#auto-recompile)
+  - [using the api directly](#using-the-api-directly)
+  - [grunt](#grunt)
+  - [gulp](#gulp)
+- [builtins](#builtins)
+  - [Buffer](#Buffer)
+  - [process](#process)
+  - [global](#global)
+  - [__filename](#__filename)
+  - [__dirname](#__dirname)
+- [transforms](#transforms)
+  - [writing your own](#writing-your-own)
+- [package.json](#package.json)
+  - [browser field](#browser-field)
+  - [browserify.transform field](#browserify.transform-field)
+- [finding good modules](#finding-good-modules)
+  - [module philosophy](#module-philosophy)
+- [organizing modules](#organizing-modules)
+  - [avoiding ../../../../../../..](#avoiding-../../../../../../..)
+  - [non-javascript assets](#non-javascript-assets)
+  - [reusable components](#reusable-components)
+- [testing in node and the browser](#testing-in-node-and-the-browser)
+  - [testing libraries](#testing-libraries)
+  - [code coverage](#code-coverage)
+  - [testling-ci](#testling-ci)
+- [bundling](#bundling)
+  - [saving bytes](#saving-bytes)
+  - [standalone](#standalone)
+  - [external bundles](#external-bundles)
+  - [ignoring and excluding](#ignoring-and-excluding)
+  - [browserify cdn](#browserify-cdn)
+- [compiler pipeline](#compiler-pipeline)
+  - [module-deps](#module-deps)
+  - [browser-pack](#browser-pack)
+  - [insert-module-globals](#insert-module-globals)
+  - [build your own browserify](#build-your-own-browserify)
+  - [browser-unpack](#browser-unpack)
+  - [plugins](#plugins)
+
 # node packaged modules
 
 Before we can dive too deeply into how to use browserify and how it works, it is
@@ -489,7 +541,7 @@ during development do `npm run watch`.
 
 [Learn more about `npm run`](http://substack.net/task_automation_with_npm_run).
 
-### beefy
+### [beefy](https://www.npmjs.org/package/beefy)
 
 If you would rather spin up a web server that automatically recompiles your code
 when you modify it, check out [beefy](http://didact.us/beefy/).
@@ -918,7 +970,7 @@ persists even on npm.
 However, this
 [kitchen-sink mentality](https://github.com/substack/node-mkdirp/issues/17)
 toward including a bunch of thematically-related but separable functionality
-into a single package appears to be an artifact for the difficulty of of
+into a single package appears to be an artifact for the difficulty of
 publishing and discovery in a pre-github, pre-npm era.
 
 There are two other big problems with modules that try to export a bunch of
@@ -1271,6 +1323,7 @@ with:
   "name": "app-widget",
   "version": "1.0.0",
   "private": true,
+  "main": "widget.js",
   "browserify": {
     "transform": [ "brfs" ]
   },
