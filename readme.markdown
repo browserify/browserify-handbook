@@ -51,7 +51,7 @@ front or backend alike.
   - [writing your own](#writing-your-own)
 - [package.json](#package.json)
   - [browser field](#browser-field)
-  - [browserify.transform field](#browserify.transform-field)
+  - [browserify.transform field](#browserifytransform-field)
 - [finding good modules](#finding-good-modules)
   - [module philosophy](#module-philosophy)
 - [organizing modules](#organizing-modules)
