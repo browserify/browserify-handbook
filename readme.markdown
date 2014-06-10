@@ -997,7 +997,7 @@ There is no clear natural boundary of the problem domain in this kind of package
 about what the scope is, it's all
 [somebody's smug opinion](http://david.heinemeierhansson.com/2012/rails-is-omakase.html).
 
-Node, npm, and browserify are not that. They are avowedly ala-carte,
+Node, npm, and browserify are not that. They are avowedly à la carte,
 participatory, and would rather celebrate disagreement and the dizzying
 proliferation of new ideas and approaches than try to clamp down in the name of
 conformity, standards, or "best practices".
