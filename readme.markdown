@@ -55,7 +55,7 @@ front or backend alike.
 - [finding good modules](#finding-good-modules)
   - [module philosophy](#module-philosophy)
 - [organizing modules](#organizing-modules)
-  - [avoiding ../../../../../../..](#avoiding-../../../../../../..)
+  - [avoiding ../../../../../../..](#avoiding-)
   - [non-javascript assets](#non-javascript-assets)
   - [reusable components](#reusable-components)
 - [testing in node and the browser](#testing-in-node-and-the-browser)
