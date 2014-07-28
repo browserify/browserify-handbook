@@ -69,12 +69,22 @@ front or backend alike.
   - [ignoring and excluding](#ignoring-and-excluding)
   - [browserify cdn](#browserify-cdn)
 - [compiler pipeline](#compiler-pipeline)
-  - [module-deps](#module-deps)
-  - [browser-pack](#browser-pack)
-  - [insert-module-globals](#insert-module-globals)
   - [build your own browserify](#build-your-own-browserify)
+  - [labeled phases](#labeled-phases)
+    - [deps](#deps)
+      - [insert-module-globals](#insert-module-globals)
+    - [json](#json)
+    - [unbom](#unbom)
+    - [syntax](#syntax)
+    - [sort](#sort)
+    - [dedupe](#dedupe)
+    - [label](#label)
+    - [emit-deps](#emit-deps)
+    - [debug](#debug)
+    - [pack](#pack)
+    - [wrap](#wrap)
   - [browser-unpack](#browser-unpack)
-  - [plugins](#plugins)
+- [plugins](#plugins)
 
 # node packaged manuscript
 
@@ -1818,14 +1828,105 @@ b.exclude('foo')
 
 # compiler pipeline
 
-## module-deps
+Since version 5, browserify exposes its compiler pipeline as a
+[labeled-stream-splicer](https://www.npmjs.org/package/labeled-stream-splicer).
 
-## browser-pack
+This means that transformations can be added or removed directly into the
+internal pipeline. This pipeline provides a clean interface for advanced
+customizations such as watching files or factoring bundles from multiple entry
+points. 
 
-## insert-module-globals
+For example, we could replace the built-in integer-based labeling mechanism with
+hashed IDs by first injecting a pass-through transform after the "deps" have
+been calculated to hash source files. Then we can use the hashes we captured to
+create our own custom labeler, replacing the built-in "label" transform:
+
+``` js
+var browserify = require('browserify');
+var through = require('through2');
+var shasum = require('shasum');
+
+var b = browserify('./main.js');
+
+var hashes = {};
+var hasher = through.obj(function (row, enc, next) {
+    hashes[row.id] = shasum(row.source);
+    this.push(row);
+    next();
+});
+b.pipeline.get('deps').push(hasher);
+
+var labeler = through.obj(function (row, enc, next) {
+    row.id = hashes[row.id];
+    
+    Object.keys(row.deps).forEach(function (key) {
+        row.deps[key] = hashes[row.deps[key]];
+    });
+    
+    this.push(row);
+    next();
+});
+b.pipeline.get('label').splice(0, 1, labeler);
+
+b.bundle().pipe(process.stdout);
+```
+
+Now instead of getting integers for the IDs in the output format, we get file
+hashes:
+
+```
+$ node bundle.js
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"5f0a0e3a143f2356582f58a70f385f4bde44f04b":[function(require,module,exports){
+var foo = require('./foo.js');
+var bar = require('./bar.js');
+
+console.log(foo(3) + bar(4));
+
+},{"./bar.js":"cba5983117ae1d6699d85fc4d54eb589d758f12b","./foo.js":"736100869ec2e44f7cfcf0dc6554b055e117c53c"}],"cba5983117ae1d6699d85fc4d54eb589d758f12b":[function(require,module,exports){
+module.exports = function (n) { return n * 100 };
+
+},{}],"736100869ec2e44f7cfcf0dc6554b055e117c53c":[function(require,module,exports){
+module.exports = function (n) { return n + 1 };
+
+},{}]},{},["5f0a0e3a143f2356582f58a70f385f4bde44f04b"]);
+```
+
+Note that the built-in labeler does other things like checking for the external,
+excluded configurations so replacing it will be difficult if you depend on those
+features. This example just serves as an example for the kinds of things you can
+do by hacking into the compiler pipeline.
 
 ## build your own browserify
 
+## labeled phases
+
+### recorder
+
+### deps
+
+
+- [insert-module-globals](#insert-module-globals)
+
+### json
+
+### unbom
+
+### syntax
+
+### sort
+
+### dedupe
+
+### label
+
+### emit-deps
+
+### debug
+
+### pack
+
+### wrap
+
 ## browser-unpack
 
-## plugins
+# plugins
