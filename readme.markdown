@@ -2049,3 +2049,18 @@ To see a list of browserify plugins, browse npm for packages with the keyword
 "browserify-plugin": http://npmjs.org/browse/keyword/browserify-plugin
 
 ## authoring
+
+To author a plugin, write a package that exports a single function that will
+receive a bundle instance and options object as arguments:
+
+``` js
+// example plugin
+
+module.exports = function (b, opts) {
+  // ...
+}
+```
+
+Plugins operate on the bundle instance `b` directly by listening for events or
+splicing transforms into the pipeline. Plugins should not overwrite bundle
+methods unless they have a very good reason.
