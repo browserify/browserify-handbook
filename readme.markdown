@@ -1900,12 +1900,36 @@ do by hacking into the compiler pipeline.
 
 ## labeled phases
 
+Each phase in the browserify pipeline has a label that you can hook onto. Fetch
+a label with `.get(name)` to return a
+[labeled-stream-splicer](https://npmjs.org/package/labeled-stream-splicer)
+handle at the appropriate label. Once you have a handle, you can `.push()`,
+`.pop()`, `.shift()`, `.unshift()`, and `.splice()` your own transform streams
+into the pipeline or remove existing transform streams.
+
 ### recorder
+
+The recorder is used to capture the inputs sent to the `deps` phase so that they
+can be replayed on subsequent calls to `.bundle()`. Unlike in previous releases,
+v5 can generate bundle output multiple times. This is very handy for tools like
+watchify that re-bundle when a file has changed.
 
 ### deps
 
+The `deps` phase expects entry and `require()` files or objects as input and
+calls [module-deps](https://npmjs.org/package/module-deps) to generate a stream
+of json output for all of the files in the dependency graph.
 
-- [insert-module-globals](#insert-module-globals)
+module-deps is invoked with some customizations here such as:
+
+* setting up the browserify transform key for package.json
+* filtering out external, excluded, and ignored files
+* setting the default extensions for `.js` and `.json` plus options configured
+in the `opts.extensions` parameter in the browserify constructor
+* configuring a global [insert-module-globals](#insert-module-globals)
+transform to detect and implement `process`, `Buffer`, `global`, `__dirname`,
+and `__filename`
+* setting up the list of node builtins which are shimmed by browserify
 
 ### json
 
