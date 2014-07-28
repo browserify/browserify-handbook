@@ -1990,4 +1990,28 @@ transformations without interfering with existing mechanics.
 
 ## browser-unpack
 
+[browser-unpack](https://npmjs.org/package/browser-unpack) converts a compiled
+bundle file back into a format very similar to the output of
+[module-deps](https://npmjs.org/package/module-deps).
+
+This is very handy if you need to inspect or transform a bundle that has already
+been compiled.
+
+For example:
+
+``` js
+$ browserify src/main.js | browser-unpack
+[
+{"id":1,"source":"module.exports = function (n) { return n * 100 };","deps":{}}
+,
+{"id":2,"source":"module.exports = function (n) { return n + 1 };","deps":{}}
+,
+{"id":3,"source":"var foo = require('./foo.js');\nvar bar = require('./bar.js');\n\nconsole.log(foo(3) + bar(4));","deps":{"./bar.js":1,"./foo.js":2},"entry":true}
+]
+```
+
+This decomposition is needed by tools such as
+[factor-bundle](https://www.npmjs.org/package/factor-bundle)
+and [bundle-collapser](https://www.npmjs.org/package/bundle-collapser).
+
 # plugins
