@@ -2015,3 +2015,37 @@ This decomposition is needed by tools such as
 and [bundle-collapser](https://www.npmjs.org/package/bundle-collapser).
 
 # plugins
+
+When loaded, plugins have access to the browserify instance itself.
+
+## using
+
+Plugins should be used sparingly and only in cases where a transform or global
+transform is not powerful enough to perform the desired functionality.
+
+You can load a plugin with `-p` on the command-line:
+
+```
+$ browserify main.js -p foo > bundle.js
+```
+
+would load a plugin called `foo`. `foo` is resolved with `require()`, so to load
+a local file as a plugin, preface the path with a `./` and to load a plugin from
+`node_modules/foo`, just do `-p foo`.
+
+You can pass options to plugins with square brackets around the entire plugin
+expression, including the plugin name as the first argument:
+
+```
+$ browserify one.js two.js \
+  -p [ factor-bundle -o bundle/one.js -o bundle/two.js ] \
+  > common.js
+```
+
+This command-line syntax is parsed by the
+[subarg](https://npmjs.org/package/subarg) package.
+
+To see a list of browserify plugins, browse npm for packages with the keyword
+"browserify-plugin": http://npmjs.org/browse/keyword/browserify-plugin
+
+## authoring
