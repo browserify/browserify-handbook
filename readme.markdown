@@ -51,11 +51,11 @@ front or backend alike.
   - [writing your own](#writing-your-own)
 - [package.json](#package.json)
   - [browser field](#browser-field)
-  - [browserify.transform field](#browserify.transform-field)
+  - [browserify.transform field](#browserifytransform-field)
 - [finding good modules](#finding-good-modules)
   - [module philosophy](#module-philosophy)
 - [organizing modules](#organizing-modules)
-  - [avoiding ../../../../../../..](#avoiding-../../../../../../..)
+  - [avoiding ../../../../../../..](#avoiding-)
   - [non-javascript assets](#non-javascript-assets)
   - [reusable components](#reusable-components)
 - [testing in node and the browser](#testing-in-node-and-the-browser)
@@ -85,6 +85,8 @@ front or backend alike.
     - [wrap](#wrap)
   - [browser-unpack](#browser-unpack)
 - [plugins](#plugins)
+  - [using plugins](#using-plugins)
+  - [authoring plugins](#authoring-plugins)
 
 # node packaged manuscript
 
@@ -1119,7 +1121,7 @@ node and browserify both support but discourage the use of `$NODE_PATH`.
 ## non-javascript assets
 
 There are many
-[browserify transforms](https://github.com/substack/node-browserify/wiki/browserify-transforms)
+[browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms)
 you can use to do many things. Commonly, transforms are used to include
 non-javascript assets into bundle files.
 
@@ -2018,7 +2020,7 @@ and [bundle-collapser](https://www.npmjs.org/package/bundle-collapser).
 
 When loaded, plugins have access to the browserify instance itself.
 
-## using
+## using plugins
 
 Plugins should be used sparingly and only in cases where a transform or global
 transform is not powerful enough to perform the desired functionality.
@@ -2048,7 +2050,7 @@ This command-line syntax is parsed by the
 To see a list of browserify plugins, browse npm for packages with the keyword
 "browserify-plugin": http://npmjs.org/browse/keyword/browserify-plugin
 
-## authoring
+## authoring plugins
 
 To author a plugin, write a package that exports a single function that will
 receive a bundle instance and options object as arguments:
