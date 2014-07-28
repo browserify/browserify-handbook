@@ -1933,23 +1933,60 @@ and `__filename`
 
 ### json
 
+This transform adds `module.exports=` in front of files with a `.json`
+extension.
+
 ### unbom
+
+This transform removes byte order markers, which are sometimes used by windows
+text editors to indicate the endianness of files. These markers are ignored by
+node, so browserify ignores them for compatibility.
 
 ### syntax
 
+This transform checks for syntax errors using the
+[syntax-error](https://npmjs.org/package/syntax-error) package to give
+informative syntax errors with line and column numbers.
+
 ### sort
+
+This phase uses [deps-sort](https://www.npmjs.org/package/deps-sort) to sort
+the rows written to it in order to make the bundles deterministic.
 
 ### dedupe
 
+The transform at this phase uses dedupe information provided by
+[deps-sort](https://www.npmjs.org/package/deps-sort) in the `sort` phase to
+remove files that have duplicate contents. 
+
 ### label
+
+This phase converts file-based IDs which might expose system path information
+and inflate the bundle size into integer-based IDs.
+
+The `label` phase will also normalize path names based on the `opts.basedir` or
+`process.cwd()` to avoid exposing system path information.
 
 ### emit-deps
 
+This phase emits a `'dep'` event for each row after the `label` phase.
+
 ### debug
+
+If `opts.debug` was given to the `browserify()` constructor, this phase will
+transform input to add `sourceRoot` and `sourceFile` properties which are used
+by [browser-pack](https://npmjs.org/package/browser-pack) in the `pack` phase.
 
 ### pack
 
+This phase converts rows with `'id'` and `'source'` parameters as input (among
+others) and generates the concatenated javascript bundle as output
+using [browser-pack](https://npmjs.org/package/browser-pack).
+
 ### wrap
+
+This is an empty phase at the end where you can easily tack on custom post
+transformations without interfering with existing mechanics.
 
 ## browser-unpack
 
