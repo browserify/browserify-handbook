@@ -68,6 +68,9 @@ front or backend alike.
   - [external bundles](#external-bundles)
   - [ignoring and excluding](#ignoring-and-excluding)
   - [browserify cdn](#browserify-cdn)
+- [partitioning](#partitioning)
+  - [factor-bundle](#factor-bundle)
+  - [partition-bundle](#partition-bundle)
 - [compiler pipeline](#compiler-pipeline)
   - [build your own browserify](#build-your-own-browserify)
   - [labeled phases](#labeled-phases)
@@ -1827,6 +1830,65 @@ b.exclude('foo')
 ```
 
 ## browserify cdn
+
+# partitioning
+
+Most of the time, the default method of bundling where one or more entry files
+map to a single bundled output file is perfectly adequate, particularly
+considering that bundling minimizes latency down to a single http request to
+fetch all the javascript assets.
+
+However, sometimes this initial penalty is too high for parts of a website that
+are rarely or never used by most visitors such as an admin panel.
+This partitioning can be accomplished with the technique covered in the
+[ignoring and excluding](#ignoring-and-excluding) section, but factoring out
+shared dependencies manually can be tedious for a large and fluid dependency
+graph.
+
+Luckily, there are plugins that can automatically factor browserify output into
+separate bundle payloads.
+
+## factor-bundle
+
+factor-bundle splits browserify output into multiple bundle targets based on
+entry-point. For each entry-point, an entry-specific output file is built. Files
+that are needed by two or more of the entry files get factored out into a common
+bundle.
+
+For example, suppose we have 2 pages: /x and /y. Each page has an entry point,
+`x.js` for /x and `y.js` for /y.
+
+We then generate page-specific bundles `bundle/x.js` and `bundle/y.js` with
+`bundle/common.js` containing the dependencies shared by both `x.js` and `y.js`:
+
+```
+browserify x.js y.js -p [ factor-bundle -o bundle/x.js -o bundle/y.js ] \
+  -o bundle/common.js
+```
+
+Now we can simply put 2 script tags on each page. On /x we would put:
+
+``` html
+<script src="/bundle/common.js"></script>
+<script src="/bundle/x.js"></script>
+```
+
+and on page /y we would put:
+
+``` html
+<script src="/bundle/common.js"></script>
+<script src="/bundle/y.js"></script>
+```
+
+You could also load the bundles asynchronously with ajax or by inserting a
+script tag into the page dynamically but factor-bundle only concerns itself with
+generating the bundles, not with loading them.
+
+## partition-bundle
+
+partition-bundle handles splitting output into multiple bundles like
+factor-bundle, but includes a built-in loader using a special `loadjs()`
+function.
 
 # compiler pipeline
 
