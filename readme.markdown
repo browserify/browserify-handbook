@@ -68,6 +68,8 @@ front or backend alike.
   - [external bundles](#external-bundles)
   - [ignoring and excluding](#ignoring-and-excluding)
   - [browserify cdn](#browserify-cdn)
+- [shimming](#shimming)
+  - [browserify-shim](#browserify-shim)
 - [partitioning](#partitioning)
   - [factor-bundle](#factor-bundle)
   - [partition-bundle](#partition-bundle)
@@ -1830,6 +1832,60 @@ b.exclude('foo')
 ```
 
 ## browserify cdn
+
+# shimming
+
+Unfortunately, some packages are not written with node-style commonjs exports.
+For modules that export their functionality with globals or AMD, there are
+packages that can help automatically convert these troublesome packages into
+something that browserify can understand.
+
+## browserify-shim
+
+One way to automatically convert non-commonjs packages is with
+[browserify-shim](https://npmjs.org/package/browserify-shim).
+
+[browserify-shim](https://npmjs.org/package/browserify-shim) is loaded as a
+transform and also reads a `"browserify-shim"` field from `package.json`.
+
+Suppose we need to use a troublesome third-party library we've placed in
+`./vendor/foo.js` that exports its functionality as a window global called
+`FOO`. We can set up our `package.json` with:
+
+``` json
+{
+  "browserify": {
+    "transform": "browserify-shim"
+  },
+  "browserify-shim": {
+    "./vendor/foo.js": "FOO"
+  }
+}
+```
+
+and now when we `require('./vendor/foo.js')`, we get the `FOO` variable that
+`./vendor/foo.js` tried to put into the global scope, but that attempt was
+shimmed away into an isolated context to prevent global pollution.
+
+We could even use the [browser field](#browser-field) to make `require('foo')`
+work instead of always needing to use a relative path to load `./vendor/foo.js`:
+
+``` json
+{
+  "browser": {
+    "foo": "./vendor/foo.js"
+  },
+  "browserify": {
+    "transform": "browserify-shim"
+  },
+  "browserify-shim": {
+    "foo": "FOO"
+  }
+}
+```
+
+Now `require('foo')` will return the `FOO` export that `./vendor/foo.js` tried
+to place on the global scope.
 
 # partitioning
 
