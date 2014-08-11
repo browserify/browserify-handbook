@@ -1890,6 +1890,42 @@ partition-bundle handles splitting output into multiple bundles like
 factor-bundle, but includes a built-in loader using a special `loadjs()`
 function.
 
+partition-bundle takes a json file that maps source files to bundle files:
+
+```
+{
+  "entry.js": ["./a"],
+  "common.js": ["./b"],
+  "common/extra.js": ["./e", "./d"]
+}
+```
+
+Then partition-bundle is loaded as a plugin and the mapping file, output
+directory, and destination url path (required for dynamic loading) are passed
+in:
+
+```
+browserify -p [ partition-bundle --map mapping.json \
+  --output output/directory --url directory ]
+```
+
+Now you can add:
+
+``` html
+<script src="entry.js"></script>
+```
+
+to your page to load the entry file. From inside the entry file, you can
+dynamically load other bundles with a `loadjs()` function:
+
+``` js
+a.addEventListener('click', function() {
+  loadjs(['./e', './d'], function(e, d) {
+    console.log(e, d);
+  });
+});
+```
+
 # compiler pipeline
 
 Since version 5, browserify exposes its compiler pipeline as a
