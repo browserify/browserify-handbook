@@ -37,6 +37,7 @@ front or backend alike.
   - [why concatenate](#why-concatenate)
 - [development](#development)
   - [source maps](#source-maps)
+    - [exorcist](#exorcist)
   - [auto-recompile](#auto-recompile)
   - [using the api directly](#using-the-api-directly)
   - [grunt](#grunt)
@@ -530,6 +531,23 @@ Browserify supports a `--debug`/`-d` flag and `opts.debug` parameter to enable
 source maps. Source maps tell the browser to convert line and column offsets for
 exceptions thrown in the bundle file back into the offsets and filenames of the
 original sources.
+
+The source maps include all the original file contents inline so that you can
+simply put the bundle file on a web server and not need to ensure that all the
+original source contents are accessible from the web server with paths set up
+correctly.
+
+### exorcist
+
+The downside of inlining all the source files into the inline source map is that
+the bundle is twice as large. This is fine for debugging locally but not
+practical for shipping source maps to production. However, you can use
+[exorcist](https://npmjs.org/package/exorcist) to pull the inline source map out
+into a separate `bundle.map.js` file:
+
+``` sh
+browserify main.js --debug | exorcist bundle.js.map > bundle.js
+```
 
 ## auto-recompile
 
