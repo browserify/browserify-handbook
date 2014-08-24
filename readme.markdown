@@ -1001,7 +1001,7 @@ browserify -t coffeeify \
 "browserify": {
   "transform": [
     "coffeeify",
-    "browserify-ngannotate", {"ext": ".coffee"}
+    ["browserify-ngannotate", {"ext": ".coffee"}]
   ]
 }
 ```
