@@ -50,7 +50,7 @@ front or backend alike.
   - [__dirname](#__dirname)
 - [transforms](#transforms)
   - [writing your own](#writing-your-own)
-- [package.json](#package.json)
+- [package.json](#packagejson)
   - [browser field](#browser-field)
   - [browserify.transform field](#browserifytransform-field)
 - [finding good modules](#finding-good-modules)
