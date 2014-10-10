@@ -1924,10 +1924,10 @@ separate bundle payloads.
 
 ## factor-bundle
 
-factor-bundle splits browserify output into multiple bundle targets based on
-entry-point. For each entry-point, an entry-specific output file is built. Files
-that are needed by two or more of the entry files get factored out into a common
-bundle.
+[factor-bundle](https://www.npmjs.org/package/factor-bundle) splits browserify
+output into multiple bundle targets based on entry-point. For each entry-point,
+an entry-specific output file is built. Files that are needed by two or more of
+the entry files get factored out into a common bundle.
 
 For example, suppose we have 2 pages: /x and /y. Each page has an entry point,
 `x.js` for /x and `y.js` for /y.
@@ -1960,9 +1960,9 @@ generating the bundles, not with loading them.
 
 ## partition-bundle
 
-partition-bundle handles splitting output into multiple bundles like
-factor-bundle, but includes a built-in loader using a special `loadjs()`
-function.
+[partition-bundle](https://www.npmjs.org/package/partition-bundle) handles
+splitting output into multiple bundles like factor-bundle, but includes a
+built-in loader using a special `loadjs()` function.
 
 partition-bundle takes a json file that maps source files to bundle files:
 
