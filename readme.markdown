@@ -984,6 +984,29 @@ transform array and they will be applied in order.
 Like the `"browser"` field, transforms configured in package.json will only
 apply to the local package for the same reasons.
 
+### configuring transforms
+
+Sometimes a transform takes configuration options on the command line. To apply these
+from package.json you can do the following.
+
+**on the command line**
+```
+browserify -t coffeeify \
+           -t [ browserify-ngannotate --ext .coffee ] \
+           index.coffee > index.js
+```
+
+**in package.json**
+``` json
+"browserify": {
+  "transform": [
+    "coffeeify",
+    ["browserify-ngannotate", {"ext": ".coffee"}]
+  ]
+}
+```
+
+
 # finding good modules
 
 Here are [some useful heuristics](http://substack.net/finding_modules)
