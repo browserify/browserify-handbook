@@ -454,7 +454,7 @@ object or develops an internal namespacing scheme.
 This approach does not scale well without extreme diligence since each new file
 needs an additional `<script>` tag in all of the html pages where the
 application will be rendered. Further, the files tend to be very order-sensitive
-because some files need to be included before other files the expect globals to
+because some files need to be included before other files that expect globals to
 already be present in the environment.
 
 It can be difficult to refactor or maintain applications built this way.
@@ -894,7 +894,7 @@ from `main.js`, but when they do `require('mypkg')` in a browser, they will get
 the exports from `browser.js`.
 
 Splitting up whether you are in the browser or not with a `"browser"` field in
-this way is greatly preferrable to checking whether you are in a browser at
+this way is greatly preferable to checking whether you are in a browser at
 runtime because you may want to load different modules based on whether you are
 in node or the browser. If the `require()` calls for both node and the browser
 are in the same file, browserify's static analysis will include everything
@@ -947,7 +947,7 @@ The browser field *only* applies to the current package. Any mappings you put
 will not propagate down to its dependencies or up to its dependents. This
 isolation is designed to protect modules from each other so that when you
 require a module you won't need to worry about any system-wide effects it might
-have. Likewise, you shouldn't need to wory about how your local configuration
+have. Likewise, you shouldn't need to worry about how your local configuration
 might adversely affect modules far away deep into your dependency graph.
 
 ## browserify.transform field
@@ -1224,7 +1224,7 @@ insertStyle(css);
 ```
 
 Inserting css this way works fine for small reusable modules that you distribute
-with npm because they are fully-contained, but if you want a more wholistic
+with npm because they are fully-contained, but if you want a more holistic
 approach to asset management using browserify, check out 
 [atomify](https://www.npmjs.org/package/atomify) and
 [parcelify](https://www.npmjs.org/package/parcelify).
