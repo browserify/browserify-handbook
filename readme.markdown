@@ -1079,6 +1079,23 @@ overhead of setting up a private npm or git repo is still rather large in many
 cases. Here are some approaches for avoiding the `../../../../../../../`
 relative paths problem.
 
+### symlink
+
+The simplest thing you can do is to symlink your app root directory into your
+node_modules/ directory.
+
+Did you know that [symlinks work on windows
+too](http://www.howtogeek.com/howto/windows-vista/using-symlinks-in-windows-vista/)?
+
+To link a `lib/` directory in your project root into `node_modules`, do:
+
+```
+ln -s ../lib node_modules/app
+```
+
+and now from anywhere in your project you'll be able to require files in `lib/`
+by doing `require('app/foo.js')` to get `lib/foo.js`.
+
 ### node_modules
 
 People sometimes object to putting application-specific modules into
@@ -1134,19 +1151,6 @@ create a separate package.json with its own transform field in your
 transforms don't apply across module boundaries. This will make your modules
 more robust against configuration changes in your application and it will be
 easier to independently reuse the packages outside of your application.
-
-### symlink
-
-Another handy trick if you are working on an application where you can make
-symlinks and don't need to support windows is to symlink a `lib/` or `app/`
-folder into `node_modules`. From the project root, do:
-
-```
-ln -s ../lib node_modules/app
-```
-
-and now from anywhere in your project you'll be able to require files in `lib/`
-by doing `require('app/foo.js')` to get `lib/foo.js`.
 
 ### custom paths
 
