@@ -2108,7 +2108,7 @@ handle at the appropriate label. Once you have a handle, you can `.push()`,
 `.pop()`, `.shift()`, `.unshift()`, and `.splice()` your own transform streams
 into the pipeline or remove existing transform streams.
 
-### recorder
+### record
 
 The recorder is used to capture the inputs sent to the `deps` phase so that they
 can be replayed on subsequent calls to `.bundle()`. Unlike in previous releases,
