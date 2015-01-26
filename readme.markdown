@@ -1094,7 +1094,11 @@ ln -s ../lib node_modules/app
 ```
 
 and now from anywhere in your project you'll be able to require files in `lib/`
-by doing `require('app/foo.js')` to get `lib/foo.js`.
+by doing `require('app/foo.js')` to get `lib/foo.js`. 
+
+One caveat though: transformations such as `reactify` defined on the command line or in the main
+`package.json` are not applied to code required like this. You need to define
+the transformations also in `lib/package.json`.
 
 ### node_modules
 
