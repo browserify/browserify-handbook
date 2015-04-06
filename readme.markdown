@@ -1233,11 +1233,11 @@ approach to asset management using browserify, check out
 [atomify](https://www.npmjs.org/package/atomify) and
 [parcelify](https://www.npmjs.org/package/parcelify).
 
-### hbsify
+### [hbsify](https://www.npmjs.com/package/hbsify)
 
-### jadeify
+### [jadeify](https://www.npmjs.com/package/jadeify)
 
-### reactify
+### [reactify](https://www.npmjs.com/package/reactify)
 
 ## reusable components
 
