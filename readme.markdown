@@ -41,6 +41,7 @@ front or backend alike.
   - [auto-recompile](#auto-recompile)
     - [watchify](#watchify)
     - [beefy](#beefy)
+    - [wzrd](#wzrd)
     - [browserify-middleware, enchilada](#browserify-middleware-enchilada)
     - [livereactload](#livereactload)
     - [budo](#budo)
@@ -610,6 +611,19 @@ beefy main.js
 
 and it will set up shop on an http port.
 
+### [wzrd](https://github.com/maxogden/wzrd)
+
+In a similar spirit to beefy but in a more minimal form is
+[wzrd](https://github.com/maxogden/wzrd).
+
+Just `npm install -g wzrd` then you can do:
+
+```
+wzrd app.js
+```
+
+and open up http://localhost:9966 in your browser.
+
 ### browserify-middleware, enchilada
 
 If you are using express, check out
@@ -643,16 +657,16 @@ npm install -g watchify budo
 then tell budo to watch a file and listen on http://localhost:9966
 
 ```
-budo index.js
+budo app.js
 ```
 
-Now every time you update `index.js` or any other file in your dependency graph,
+Now every time you update `app.js` or any other file in your dependency graph,
 the code will update after a refresh.
 
 or to automatically reload the page live when a file changes, you can do:
 
 ```
-budo index.js --live
+budo app.js --live
 ```
 
 Check out [budo-chrome](https://github.com/mattdesl/budo-chrome) for a way to
