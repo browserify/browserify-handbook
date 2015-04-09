@@ -42,6 +42,8 @@ front or backend alike.
     - [watchify](#watchify)
     - [beefy](#beefy)
     - [browserify-middleware, enchilada](#browserify-middleware-enchilada)
+  - [live reload](#live-reload)
+    - [livereactload](#livereactload)
   - [using the api directly](#using-the-api-directly)
   - [grunt](#grunt)
   - [gulp](#gulp)
@@ -613,6 +615,21 @@ or [enchilada](https://www.npmjs.org/package/enchilada).
 
 They both provide middleware you can drop into an express application for
 serving browserify bundles.
+
+## live reload
+
+Even more advanced and slick than auto-recompiling, you can also in some
+circumstances update the page without reloading or with automated reloading.
+
+### [livereactload](https://github.com/milankinen/livereactload)
+
+livereactload is a tool for [react](https://github.com/facebook/react)
+that automatically updates your web page state when you modify your code.
+
+livereactload is just an ordinary browserify transform that you can load with
+`-t livereactload`, but you should consult the
+[project readme](https://github.com/milankinen/livereactload#livereactload)
+for more information.
 
 ## using the api directly
 
