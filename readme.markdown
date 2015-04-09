@@ -43,6 +43,7 @@ front or backend alike.
     - [beefy](#beefy)
     - [browserify-middleware, enchilada](#browserify-middleware-enchilada)
     - [livereactload](#livereactload)
+    - [budo](#budo)
   - [using the api directly](#using-the-api-directly)
   - [grunt](#grunt)
   - [gulp](#gulp)
@@ -627,6 +628,36 @@ livereactload is just an ordinary browserify transform that you can load with
 `-t livereactload`, but you should consult the
 [project readme](https://github.com/milankinen/livereactload#livereactload)
 for more information.
+
+### [budo](https://github.com/mattdesl/budo)
+
+budo is a browserify development server with a focus on incremental bundling and
+live reloading, including for css.
+
+First make sure the `watchify` command is installed along with budo:
+
+```
+npm install -g watchify budo
+```
+
+then tell budo to watch a file and listen on http://localhost:9966
+
+```
+budo index.js
+```
+
+Now every time you update `index.js` or any other file in your dependency graph,
+the code will update after a refresh.
+
+or to automatically reload the page live when a file changes, you can do:
+
+```
+budo index.js --live
+```
+
+Check out [budo-chrome](https://github.com/mattdesl/budo-chrome) for a way to
+configure budo to update the code live without even reloading the page
+(sometimes called hot reloading).
 
 ## using the api directly
 
