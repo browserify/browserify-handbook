@@ -42,7 +42,6 @@ front or backend alike.
     - [watchify](#watchify)
     - [beefy](#beefy)
     - [browserify-middleware, enchilada](#browserify-middleware-enchilada)
-  - [live reload](#live-reload)
     - [livereactload](#livereactload)
   - [using the api directly](#using-the-api-directly)
   - [grunt](#grunt)
@@ -559,6 +558,9 @@ browserify main.js --debug | exorcist bundle.js.map > bundle.js
 Running a command to recompile your bundle every time can be slow and tedious.
 Luckily there are many tools to solve this problem.
 
+Some of these tools support live-reloading to various degrees and others have a
+more traditional manual refresh cycle.
+
 ### [watchify](https://npmjs.org/package/watchify)
 
 You can use `watchify` interchangeably with `browserify` but instead of writing
@@ -615,11 +617,6 @@ or [enchilada](https://www.npmjs.org/package/enchilada).
 
 They both provide middleware you can drop into an express application for
 serving browserify bundles.
-
-## live reload
-
-Even more advanced and slick than auto-recompiling, you can also in some
-circumstances update the page without reloading or with automated reloading.
 
 ### [livereactload](https://github.com/milankinen/livereactload)
 
