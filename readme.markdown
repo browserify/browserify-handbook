@@ -558,10 +558,23 @@ browserify main.js --debug | exorcist bundle.js.map > bundle.js
 ## auto-recompile
 
 Running a command to recompile your bundle every time can be slow and tedious.
-Luckily there are many tools to solve this problem.
+Luckily there are many tools to solve this problem. Some of these tools support
+live-reloading to various degrees and others have a more traditional manual
+refresh cycle.
 
-Some of these tools support live-reloading to various degrees and others have a
-more traditional manual refresh cycle.
+These are just a few of the tools you can use, but there are many more on npm!
+There are many different tools here that encompass many different tradeoffs and
+development styles. It can be a little bit more work up-front to find the tools
+that responate most strongly with your own personal expectations and experience,
+but I think this diversity helps programmers to be more effective and provides
+more room for creativity and experimentation. I think diversity in tooling and a
+smaller browserify core is healthier in the medium to long term than picking a
+few "winners" by including them in browserify core (which creates all kinds of
+havoc in meaningful versioning and bitrot in core).
+
+That said, here are a few modules you might want to consider for setting up a
+browserify development workflow. But keep an eye out for other tools not (yet)
+on this list!
 
 ### [watchify](https://npmjs.org/package/watchify)
 
