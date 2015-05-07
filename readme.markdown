@@ -83,7 +83,7 @@ front or backend alike.
 - [compiler pipeline](#compiler-pipeline)
   - [build your own browserify](#build-your-own-browserify)
   - [labeled phases](#labeled-phases)
-    - [deps](#deps)#
+    - [deps](#deps)
     - [json](#json)
     - [unbom](#unbom)
     - [syntax](#syntax)
