@@ -56,7 +56,7 @@ front or backend alike.
   - [__dirname](#__dirname)
 - [transforms](#transforms)
   - [writing your own](#writing-your-own)
-- [package.json](#package.json)
+- [package.json](#packagejson)
   - [browser field](#browser-field)
   - [browserify.transform field](#browserifytransform-field)
 - [finding good modules](#finding-good-modules)
@@ -83,8 +83,7 @@ front or backend alike.
 - [compiler pipeline](#compiler-pipeline)
   - [build your own browserify](#build-your-own-browserify)
   - [labeled phases](#labeled-phases)
-    - [deps](#deps)
-      - [insert-module-globals](#insert-module-globals)
+    - [deps](#deps)#
     - [json](#json)
     - [unbom](#unbom)
     - [syntax](#syntax)
@@ -2202,7 +2201,7 @@ module-deps is invoked with some customizations here such as:
 * filtering out external, excluded, and ignored files
 * setting the default extensions for `.js` and `.json` plus options configured
 in the `opts.extensions` parameter in the browserify constructor
-* configuring a global [insert-module-globals](#insert-module-globals)
+* configuring a global [insert-module-globals](https://github.com/substack/insert-module-globals)
 transform to detect and implement `process`, `Buffer`, `global`, `__dirname`,
 and `__filename`
 * setting up the list of node builtins which are shimmed by browserify
