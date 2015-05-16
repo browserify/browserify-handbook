@@ -565,7 +565,7 @@ refresh cycle.
 These are just a few of the tools you can use, but there are many more on npm!
 There are many different tools here that encompass many different tradeoffs and
 development styles. It can be a little bit more work up-front to find the tools
-that responate most strongly with your own personal expectations and experience,
+that resonate most strongly with your own personal expectations and experience,
 but I think this diversity helps programmers to be more effective and provides
 more room for creativity and experimentation. I think diversity in tooling and a
 smaller browserify core is healthier in the medium to long term than picking a
