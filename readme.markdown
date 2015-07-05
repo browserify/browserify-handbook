@@ -1061,7 +1061,7 @@ from package.json you can do the following.
 **on the command line**
 ```
 browserify -t coffeeify \
-           -t [ browserify-ngannotate --ext .coffee ] \
+           -t [ browserify-ngannotate --ext .coffee --bar ] \
            index.coffee > index.js
 ```
 
@@ -1070,7 +1070,7 @@ browserify -t coffeeify \
 "browserify": {
   "transform": [
     "coffeeify",
-    ["browserify-ngannotate", {"ext": ".coffee"}]
+    ["browserify-ngannotate", {"ext": ".coffee", bar: true}]
   ]
 }
 ```
