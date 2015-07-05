@@ -658,33 +658,27 @@ for more information.
 
 ### [budo](https://github.com/mattdesl/budo)
 
-budo is a browserify development server with a focus on incremental bundling and
-live reloading, including for css.
+budo is a browserify development server with a stronger focus on incremental bundling and LiveReload integration (including CSS injection). 
 
-First make sure the `watchify` command is installed along with budo:
+Install it like so:
 
+```sh
+npm install budo -g
 ```
-npm install -g watchify budo
-```
 
-then tell budo to watch a file and listen on http://localhost:9966
+And run it on your entry file:
 
 ```
 budo app.js
 ```
 
-Now every time you update `app.js` or any other file in your dependency graph,
-the code will update after a refresh.
+This starts the server at [http://localhost:9966](http://localhost:9966) with a default `index.html`, incrementally bundling your source on filesave. The requests are delayed until the bundle has finished, so you won't be served stale or empty bundles if you refresh the page mid-update.
 
-or to automatically reload the page live when a file changes, you can do:
+To enable LiveReload and have the browser refresh on JS/HTML/CSS changes, you can run it like so:
 
 ```
 budo app.js --live
 ```
-
-Check out [budo-chrome](https://github.com/mattdesl/budo-chrome) for a way to
-configure budo to update the code live without even reloading the page
-(sometimes called hot reloading).
 
 ## using the api directly
 
