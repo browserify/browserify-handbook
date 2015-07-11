@@ -1755,7 +1755,7 @@ could just add the relevant directory to the globs:
   },
   "scripts": {
     "test": "tape test/*.js test/server/*.js",
-    "test-browser": "browserify test/*.js test/browser/*.js | testlingify"
+    "test-browser": "browserify test/*.js test/browser/*.js | testling"
   }
 }
 ```
@@ -1775,12 +1775,128 @@ sometimes be tricky to ensure that the correct number of callbacks have fired.
 You can solve that problem with tools like
 [macgyver](https://www.npmjs.org/package/macgyver) but it is appropriately DIY.
 
-### mocha
-
-
 ## code coverage
 
-## testling-ci
+### coverify
+
+A simple way to check code coverage in browserify is to use the
+[coverify](https://npmjs.org/package/coverify) transform.
+
+```
+$ browserify -t coverify test/*.js | node | coverify
+```
+
+or to run your tests in a real browser:
+
+```
+$ browserify -t coverify test/*.js | testling | coverify
+```
+
+coverify works by transforming the source of each package so that each
+expression is wrapped in a `__coverageWrap()` function.
+
+Each expression in the program gets a unique ID and the `__coverageWrap()`
+function will print `COVERED $FILE $ID` the first time the expression is
+executed.
+
+Before the expressions run, coverify prints a `COVERAGE $FILE $NODES` message to
+log the expression nodes across the entire file as character ranges.
+
+Here's what the output of a full run looks like:
+
+```
+$ browserify -t coverify test/whatever.js | node
+COVERAGE "/home/substack/projects/defined/test/whatever.js" [[14,28],[14,28],[0,29],[41,56],[41,56],[30,57],[95,104],[95,105],[126,146],[126,146],[115,147],[160,194],[160,194],[152,195],[200,217],[200,218],[76,220],[59,221],[59,222]]
+COVERED "/home/substack/projects/defined/test/whatever.js" 2
+COVERED "/home/substack/projects/defined/test/whatever.js" 1
+COVERED "/home/substack/projects/defined/test/whatever.js" 0
+COVERAGE "/home/substack/projects/defined/index.js" [[48,49],[55,71],[51,71],[73,76],[92,104],[92,118],[127,139],[120,140],[172,195],[172,196],[0,204],[0,205]]
+COVERED "/home/substack/projects/defined/index.js" 11
+COVERED "/home/substack/projects/defined/index.js" 10
+COVERED "/home/substack/projects/defined/test/whatever.js" 5
+COVERED "/home/substack/projects/defined/test/whatever.js" 4
+COVERED "/home/substack/projects/defined/test/whatever.js" 3
+COVERED "/home/substack/projects/defined/test/whatever.js" 18
+COVERED "/home/substack/projects/defined/test/whatever.js" 17
+COVERED "/home/substack/projects/defined/test/whatever.js" 16
+TAP version 13
+# whatever
+COVERED "/home/substack/projects/defined/test/whatever.js" 7
+COVERED "/home/substack/projects/defined/test/whatever.js" 6
+COVERED "/home/substack/projects/defined/test/whatever.js" 10
+COVERED "/home/substack/projects/defined/test/whatever.js" 9
+COVERED "/home/substack/projects/defined/test/whatever.js" 8
+COVERED "/home/substack/projects/defined/test/whatever.js" 13
+COVERED "/home/substack/projects/defined/test/whatever.js" 12
+COVERED "/home/substack/projects/defined/test/whatever.js" 11
+COVERED "/home/substack/projects/defined/index.js" 0
+COVERED "/home/substack/projects/defined/index.js" 2
+COVERED "/home/substack/projects/defined/index.js" 1
+COVERED "/home/substack/projects/defined/index.js" 5
+COVERED "/home/substack/projects/defined/index.js" 4
+COVERED "/home/substack/projects/defined/index.js" 3
+COVERED "/home/substack/projects/defined/index.js" 7
+COVERED "/home/substack/projects/defined/index.js" 6
+COVERED "/home/substack/projects/defined/test/whatever.js" 15
+COVERED "/home/substack/projects/defined/test/whatever.js" 14
+ok 1 should be equal
+
+1..1
+# tests 1
+# pass  1
+
+# ok
+```
+
+These COVERED and COVERAGE statements are just printed on stdout and they can be
+fed into the `coverify` command to generate prettier output:
+
+```
+$ browserify -t coverify test/whatever.js | node | coverify
+TAP version 13
+# whatever
+ok 1 should be equal
+
+1..1
+# tests 1
+# pass  1
+
+# ok
+
+# /home/substack/projects/defined/index.js: line 6, column 9-32
+
+          console.log('whatever');
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+
+# coverage: 30/31 (96.77 %)
+```
+
+To include code coverage into your project, you can add an entry into the
+`package.json` scripts field:
+
+``` json
+{
+  "scripts": {
+    "test": "tape test/*.js",
+    "coverage": "browserify -t coverify test/*.js | node | coverify"
+  }
+}
+```
+
+There is also a [covert](https://npmjs.com/package/covert) package that
+simplifies the browserify and coverify setup:
+
+``` json
+{
+  "scripts": {
+    "test": "tape test/*.js",
+    "coverage": "covert test/*.js"
+  }
+}
+```
+
+To install coverify or covert as a devDependency, run
+`npm install -D coverify` or `npm install -D covert`.
 
 # bundling
 
