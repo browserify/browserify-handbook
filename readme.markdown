@@ -460,7 +460,7 @@ object or develops an internal namespacing scheme.
 This approach does not scale well without extreme diligence since each new file
 needs an additional `<script>` tag in all of the html pages where the
 application will be rendered. Further, the files tend to be very order-sensitive
-because some files need to be included before other files the expect globals to
+because some files need to be included before other files that expect globals to
 already be present in the environment.
 
 It can be difficult to refactor or maintain applications built this way.
