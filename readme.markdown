@@ -661,15 +661,21 @@ for more information.
 
 browserify-hmr is a plugin for doing hot module replacement (hmr).
 
-When a file changes, browserify-hmr can update the module cache so that
-`require()` will execute the new file contents without reloading the page.
+Files can mark themselves as accepting updates. If you modify a file that
+accepts updates of itself, or if you modify a dependency of a file that accepts
+updates, then the file is re-executed with the new code.
 
 For example, if we have a file, `main.js`:
 
 ``` js
-setInterval(function () {
+function render () {
   document.body.textContent = require('./msg.js')
-}, 1000)
+}
+render()
+
+if (module.hot) {
+  module.hot.accept()
+}
 ```
 
 and a file `msg.js`:
@@ -699,23 +705,6 @@ module.exports = 'wow'
 ```
 
 then a second later, the page updates to show `wow` all by itself.
-
-browserify-hmr is cautious by default when a file is updated because otherwise
-it might cause havoc with global state. When we edit `main.js`, the changes
-don't automatically appear in the page. However, if we update our `main.js` to
-use the `ud` module:
-
-``` js
-var ud = require('ud')
-function render () {
-  document.body.textContent = require('./msg.js')
-}
-render()
-ud.defn(module, render)
-```
-
-Now we no longer need to poll with `setInterval` and we can edit both `msg.js`
-and `main.js` to see changes immediately without reloading the page.
 
 ### [budo](https://github.com/mattdesl/budo)
 
