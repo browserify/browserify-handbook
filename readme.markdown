@@ -44,6 +44,7 @@ front or backend alike.
     - [wzrd](#wzrd)
     - [browserify-middleware, enchilada](#browserify-middleware-enchilada)
     - [livereactload](#livereactload)
+    - [browserify-hmr](#browserify-hmr)
     - [budo](#budo)
   - [using the api directly](#using-the-api-directly)
   - [grunt](#grunt)
@@ -655,6 +656,66 @@ livereactload is just an ordinary browserify transform that you can load with
 `-t livereactload`, but you should consult the
 [project readme](https://github.com/milankinen/livereactload#livereactload)
 for more information.
+
+### [browserify-hmr](https://github.com/AgentME/browserify-hmr)
+
+browserify-hmr is a plugin for doing hot module replacement (hmr).
+
+When a file changes, browserify-hmr can update the module cache so that
+`require()` will execute the new file contents without reloading the page.
+
+For example, if we have a file, `main.js`:
+
+``` js
+setInterval(function () {
+  document.body.textContent = require('./msg.js')
+}, 1000)
+```
+
+and a file `msg.js`:
+
+``` js
+module.exports = 'hey'
+```
+
+We can watch `main.js` for changes and load the `browserify-hmr` plugin:
+
+```
+$ watchify main.js -p browserify-hmr -o public/bundle.js -dv
+```
+
+and serve up the static file contents in `public/` with a static file server:
+
+```
+$ ecstatic public -p 8000
+```
+
+Now if we load `http://localhost:8000`, we see the message `hey` on the page.
+
+If we change `msg.js` to be:
+
+``` js
+module.exports = 'wow'
+```
+
+then a second later, the page updates to show `wow` all by itself.
+
+browserify-hmr is cautious by default when a file is updated because otherwise
+it might cause havoc with global state. When we edit `main.js`, the changes
+don't automatically appear in the page. However, if we update our `main.js` to
+use the `ud` module:
+
+``` js
+var ud = require('ud')
+function render () {
+  document.body.textContent = require('./msg.js')
+}
+render()
+ud.defn(module, render)
+```
+
+Now we no longer need to poll with `setInterval` and we can edit both `msg.js`
+and `main.js` to see changes immediately without reloading the page.
 
 ### [budo](https://github.com/mattdesl/budo)
 
