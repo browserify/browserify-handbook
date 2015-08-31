@@ -706,6 +706,13 @@ module.exports = 'wow'
 
 then a second later, the page updates to show `wow` all by itself.
 
+Browserify-HMR can be used with
+[react-hot-transform](https://github.com/AgentME/react-hot-transform) to
+automatically allow all React components to be updated live in addition to code
+using the `module.hot` API. Unlike
+[livereactload](https://github.com/milankinen/livereactload), only modified
+files are re-executed instead of the whole bundle on each modification.
+
 ### [budo](https://github.com/mattdesl/budo)
 
 budo is a browserify development server with a stronger focus on incremental bundling and LiveReload integration (including CSS injection). 
