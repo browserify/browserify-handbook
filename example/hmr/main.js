@@ -1,8 +1,3 @@
-function render () {
-  document.body.textContent = require('./msg.js')
-}
-render()
+document.body.textContent = require('./msg.js')
 
-if (module.hot) {
-  module.hot.accept()
-}
+if (module.hot) module.hot.accept()

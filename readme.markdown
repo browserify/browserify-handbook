@@ -668,14 +668,9 @@ updates, then the file is re-executed with the new code.
 For example, if we have a file, `main.js`:
 
 ``` js
-function render () {
-  document.body.textContent = require('./msg.js')
-}
-render()
+document.body.textContent = require('./msg.js')
 
-if (module.hot) {
-  module.hot.accept()
-}
+if (module.hot) module.hot.accept()
 ```
 
 and a file `msg.js`:
