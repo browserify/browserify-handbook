@@ -442,7 +442,7 @@ worry about how their dependency version choices might impact other dependencies
 included in the same application.
 
 You can leverage how `node_modules/` works to organize your own local
-application modules too. See the `avoiding ../../../../../../..` section for
+application modules too. See the [avoiding ../../../../../../..](https://github.com/substack/browserify-handbook#avoiding-) section for
 more.
 
 ## why concatenate
