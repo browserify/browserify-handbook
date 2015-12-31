@@ -20,7 +20,9 @@
   },
   "license": "cc-by-3.0",
   "dependencies": {
-    "default-pager": "^1.0.1"
+    "default-pager": "^1.0.1",
+    "msee": "^0.2.0",
+    "through2": "^2.0.0"
   },
   "bin": {
     "browserify-handbook": "bin/cmd.js"
