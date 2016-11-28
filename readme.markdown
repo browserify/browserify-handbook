@@ -1404,15 +1404,13 @@ Creating HTML elements procedurally is fine for very simple content but gets
 very verbose and unclear for anything bigger. Luckily there are many transforms
 available to ease importing HTML into your javascript modules.
 
-Let's extend our widget example using [brfs](https://npmjs.org/package/brfs). We
-can also use [domify](https://npmjs.org/package/domify) to turn the string that
-`fs.readFileSync()` returns into an html dom element:
+Let's extend our widget example using [partialify](https://npmjs.org/package/partialify). We
+can also use [domify](https://npmjs.org/package/domify) to turn the string of HTML into a DOM element:
 
 ``` js
-var fs = require('fs');
 var domify = require('domify');
 
-var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+var html = require(__dirname + '/widget.html');
 
 module.exports = Widget;
 
@@ -1441,12 +1439,11 @@ built-in `events` module and the [inherits](https://npmjs.org/package/inherits)
 module:
 
 ``` js
-var fs = require('fs');
 var domify = require('domify');
 var inherits = require('inherits');
 var EventEmitter = require('events').EventEmitter;
 
-var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+var html = require(__dirname + '/widget.html');
 
 inherits(Widget, EventEmitter);
 module.exports = Widget;
@@ -1477,12 +1474,11 @@ w.appendTo('#container');
 We can add more methods to our widget to set elements on the html:
 
 ``` js
-var fs = require('fs');
 var domify = require('domify');
 var inherits = require('inherits');
 var EventEmitter = require('events').EventEmitter;
 
-var html = fs.readFileSync(__dirname + '/widget.html', 'utf8');
+var html = require(__dirname + '/widget.html');
 
 inherits(Widget, EventEmitter);
 module.exports = Widget;
@@ -1511,7 +1507,7 @@ If setting element attributes and content gets too verbose, check out
 
 Now finally, we can toss our `widget.js` and `widget.html` into
 `node_modules/app-widget`. Since our widget uses the
-[brfs](https://npmjs.org/package/brfs) transform, we can create a `package.json`
+[partialify](https://npmjs.org/package/partialify) transform, we can create a `package.json`
 with:
 
 ``` json
@@ -1521,19 +1517,19 @@ with:
   "private": true,
   "main": "widget.js",
   "browserify": {
-    "transform": [ "brfs" ]
+    "transform": [ "partialify" ]
   },
   "dependencies": {
-    "brfs": "^1.1.1",
+    "partialify": "^3.1.1",
     "inherits": "^2.0.1"
   }
 }
 ```
 
 And now whenever we `require('app-widget')` from anywhere in our application,
-brfs will be applied to our `widget.js` automatically!
+partialify will be applied to our `widget.js` automatically!
 Our widget can even maintain its own dependencies. This way we can update
-dependencies in one widgets without worrying about breaking changes cascading
+dependencies in one widget without worrying about breaking changes cascading
 over into other widgets.
 
 Make sure to add an exclusion in your `.gitignore` for
