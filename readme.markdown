@@ -553,7 +553,7 @@ practical for shipping source maps to production. However, you can use
 into a separate `bundle.map.js` file:
 
 ``` sh
-browserify main.js --debug | exorcist bundle.js.map > bundle.js
+browserify main.js --debug | exorcist bundle.map.js > bundle.js
 ```
 
 ## auto-recompile
