@@ -762,7 +762,7 @@ If you use grunt, you'll probably want to use the
 If you use gulp, you should use the browserify API directly.
 
 Here is
-[a guide for getting started](http://viget.com/extend/gulp-browserify-starter-faq)
+[a guide for getting started](https://www.viget.com/articles/gulp-browserify-starter-faq)
 with gulp and browserify.
 
 Here is a guide on how to [make browserify builds fast with watchify using
