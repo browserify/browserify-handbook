@@ -426,7 +426,7 @@ deprecated and you should be using `node_modules/` unless you have a very good
 reason not to.
 
 The great thing about node's algorithm and how npm installs packages is that you
-can never have a version conflict, unlike most every other platform. npm
+can never have a version conflict, unlike almost every other platform. npm
 installs the dependencies of each package into `node_modules`.
 
 Each library gets its own local `node_modules/` directory where its dependencies
