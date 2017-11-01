@@ -1533,7 +1533,7 @@ with:
 And now whenever we `require('app-widget')` from anywhere in our application,
 brfs will be applied to our `widget.js` automatically!
 Our widget can even maintain its own dependencies. This way we can update
-dependencies in one widgets without worrying about breaking changes cascading
+dependencies in one widget without worrying about breaking changes cascading
 over into other widgets.
 
 Make sure to add an exclusion in your `.gitignore` for
