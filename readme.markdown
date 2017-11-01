@@ -1015,7 +1015,7 @@ from `main.js`, but when they do `require('mypkg')` in a browser, they will get
 the exports from `browser.js`.
 
 Splitting up whether you are in the browser or not with a `"browser"` field in
-this way is greatly preferrable to checking whether you are in a browser at
+this way is greatly preferable to checking whether you are in a browser at
 runtime because you may want to load different modules based on whether you are
 in node or the browser. If the `require()` calls for both node and the browser
 are in the same file, browserify's static analysis will include everything
@@ -1068,7 +1068,7 @@ The browser field *only* applies to the current package. Any mappings you put
 will not propagate down to its dependencies or up to its dependents. This
 isolation is designed to protect modules from each other so that when you
 require a module you won't need to worry about any system-wide effects it might
-have. Likewise, you shouldn't need to wory about how your local configuration
+have. Likewise, you shouldn't need to worry about how your local configuration
 might adversely affect modules far away deep into your dependency graph.
 
 ## browserify.transform field
@@ -1337,7 +1337,7 @@ document.body.appendChild(img);
 ```
 
 If you have some css you want to inline into your bundle, you can do that too
-with the assistence of a module such as
+with the assistance of a module such as
 [insert-css](https://npmjs.org/package/insert-css):
 
 ``` js
@@ -2013,7 +2013,7 @@ Another way to achieve many of the same goals as ignore and exclude is the
 ### ignoring
 
 Ignoring is an optimistic strategy designed to stub in an empty definition for
-node-specific modules that are only used in some codepaths. For example, if a
+node-specific modules that are only used in some code paths. For example, if a
 module requires a library that only works in node but for a specific chunk of
 the code:
 
