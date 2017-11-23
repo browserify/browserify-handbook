@@ -521,7 +521,7 @@ You can seamlessly share code between node and the browser. You just need a
 build step and some tooling for source maps and auto-rebuilding.
 
 Plus, we can use node's module lookup algorithms to save us from version
-mismatch insanity so that we can have multiple conflicting versions of different
+mismatch problems so that we can have multiple conflicting versions of different
 required packages in the same application and everything will still work. To
 save bytes down the wire you can dedupe, which is covered elsewhere in this
 document.
