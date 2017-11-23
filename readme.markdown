@@ -499,7 +499,7 @@ include it.
 
 There is a commonjs sugar syntax that stringifies each callback and scans it for
 `require()` calls
-[with a regexp](https://github.com/jrburke/requirejs/blob/master/require.js#L17).
+[with a regexp](https://github.com/requirejs/requirejs/blob/57c48253e42133a61075da67809b91ea34f89811/require.js#L16).
 
 Code written this way is much less order-sensitive than concatenation or globals
 since the order is resolved by explicit dependency information.
