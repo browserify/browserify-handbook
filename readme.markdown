@@ -384,7 +384,7 @@ match and raising an error if nothing is found:
 /node_modules/xyz
 ```
 
-For each `xyz` directory that exists, node will first look for a
+For each `xyz` directory that exists, node will first look for an
 `xyz/package.json` to see if a `"main"` field exists. The `"main"` field defines
 which file should take charge if you `require()` the directory path.
 
