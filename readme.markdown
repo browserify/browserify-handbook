@@ -72,6 +72,7 @@ front or backend alike.
   - [testling-ci](#testling-ci)
 - [bundling](#bundling)
   - [saving bytes](#saving-bytes)
+  - [tinyify](#tinyify)
   - [standalone](#standalone)
   - [external bundles](#external-bundles)
   - [ignoring and excluding](#ignoring-and-excluding)
@@ -1970,6 +1971,29 @@ to the `require()` algorithm that node uses.
 
 You can use the `browserify --list` and `browserify --deps` commands to further
 inspect which files are being included to scan for duplicates.
+
+## tinyify
+
+You can use the [tinyify](https://github.com/browserify/tinyify) plugin to apply
+a decent set of zero-config optimizations to your bundle. It will drastically
+reduce output size.
+
+```
+$ browserify foo.js --plugin tinyify > bundle.js
+```
+
+tinyify includes [browser-pack-flat](https://github.com/goto-bus-stop/browser-pack-flat),
+which does not follow the Node module loading behaviour as closely as the
+default [browser-pack](https://github.com/browserify/browser-pack) does. If
+there are timing issues in your tinyified bundle output, you can add the
+`--no-flat` flag to revert to the default behaviour:
+
+```
+$ browserify foo.js --plugin [ tinyify --no-flat ] > bundle.js
+```
+
+All kinds of other optimizations will still be applied so you should still see
+very significant bundle size wins.
 
 ## standalone
 
