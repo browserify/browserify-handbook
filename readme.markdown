@@ -360,6 +360,8 @@ Each file is concatenated into a single javascript file with a minimal
 This means that the bundle you generate is completely self-contained and has
 everything your application needs to work with a pretty negligible overhead.
 
+Note: If your `require()` contains anything other than a string literal (i.e. a variable) then it cannot be read at time of bundling, so the module being required will not be concatenated into your bundle and likely cause a runtime error.
+
 For more details about how browserify works, check out the compiler pipeline
 section of this document.
 
