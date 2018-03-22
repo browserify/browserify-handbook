@@ -2102,7 +2102,7 @@ the primary bundle:
 
 ```
 $ npm install jquery
-$ browserify -r jquery --standalone jquery > jquery-bundle.js
+$ browserify -r jquery > jquery-bundle.js
 ```
 
 then we want to just `require('jquery')` in a `main.js`:
