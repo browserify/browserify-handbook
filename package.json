@@ -20,8 +20,11 @@
   },
   "license": "cc-by-3.0",
   "dependencies": {
+    "concat-stream": "^1.6.2",
     "default-pager": "^1.0.1",
-    "msee": "^0.2.0",
+    "duplexer2": "^0.1.4",
+    "marked": "^0.3.18",
+    "marked-terminal": "^2.0.0",
     "through2": "^2.0.0"
   },
   "bin": {
