@@ -374,7 +374,7 @@ Instead of resolving packages from an array of system search paths like how
 `$PATH` works on the command line, node's mechanism is local by default.
 
 If you `require('./foo.js')` from `/beep/boop/bar.js`, node will
-look for `./foo.js` in `/beep/boop/foo.js`. Paths that start with a `./` or
+look for `foo.js` in `/beep/boop`. Paths that start with a `./` or
 `../` are always local to the file that calls `require()`.
 
 If however you require a non-relative name such as `require('xyz')` from
