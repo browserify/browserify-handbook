@@ -1302,7 +1302,7 @@ There are many
 you can use to do many things. Commonly, transforms are used to include
 non-javascript assets into bundle files.
 
-### brfs
+### [brfs](https://www.npmjs.com/package/brfs)
 
 One way of including any kind of asset that works in both node and the browser
 is brfs.
