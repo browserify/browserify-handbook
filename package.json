@@ -25,7 +25,7 @@
     "guide",
     "handbook"
   ],
-  "license": "cc-by-3.0",
+  "license": "CC-BY-3.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/browserify/browserify-handbook.git"
