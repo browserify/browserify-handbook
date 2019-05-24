@@ -449,8 +449,8 @@ more.
 
 ## why concatenate
 
-Browserify is a build step that runs on the server. It generates a single bundle
-file that has everything in it.
+Browserify is a build step that you can run before deploying your code. It
+generates a single bundle file that has everything in it.
 
 Here are some other ways of implementing module systems for the browser and what
 their strengths and weaknesses are:
