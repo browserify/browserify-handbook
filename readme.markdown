@@ -612,7 +612,7 @@ package.json "scripts" field:
 To build the bundle for production do `npm run build` and to watch files for
 during development do `npm run watch`.
 
-[Learn more about `npm run`](http://substack.net/task_automation_with_npm_run).
+[Learn more about `npm run`][substack.net/task_automation_with_npm_run].
 
 ### [beefy](https://www.npmjs.org/package/beefy)
 
@@ -1132,7 +1132,7 @@ browserify -t coffeeify \
 
 # finding good modules
 
-Here are [some useful heuristics](http://substack.net/finding_modules)
+Here are [some useful heuristics][substack.net/finding_modules]
 for finding good modules on npm that work in the browser:
 
 * I can install it with npm
@@ -1551,7 +1551,7 @@ node_modules/*
 ```
 
 You can read more about [shared rendering in node and the
-browser](http://substack.net/shared_rendering_in_node_and_the_browser) if you
+browser][substack.net/shared_rendering_in_node_and_the_browser] if you
 want to learn about sharing rendering logic between node and the browser using
 browserify and some streaming html libraries.
 
@@ -2531,3 +2531,7 @@ module.exports = function (b, opts) {
 Plugins operate on the bundle instance `b` directly by listening for events or
 splicing transforms into the pipeline. Plugins should not overwrite bundle
 methods unless they have a very good reason.
+
+[substack.net/finding_modules]: https://web.archive.org/web/20180624204219/https://substack.net/finding_modules
+[substack.net/task_automation_with_npm_run]: https://web.archive.org/web/20180624203804/http://substack.net/task_automation_with_npm_run
+[substack.net/shared_rendering_in_node_and_the_browser]: https://web.archive.org/web/20180624204233/http://substack.net/shared_rendering_in_node_and_the_browser
