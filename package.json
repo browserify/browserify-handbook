@@ -14,11 +14,15 @@
     "concat-stream": "^1.6.2",
     "default-pager": "^1.0.1",
     "duplexer2": "^0.1.4",
-    "marked": "^0.3.18",
-    "marked-terminal": "^2.0.0",
+    "marked": "^0.6.2",
+    "marked-terminal": "^3.2.0",
     "through2": "^2.0.0"
   },
+  "engines": {
+    "node": ">= 4"
+  },
   "homepage": "https://github.com/browserify/browserify-handbook",
+  "bugs": "https://github.com/browserify/browserify-handbook/issues",
   "keywords": [
     "browserify",
     "documentation",
