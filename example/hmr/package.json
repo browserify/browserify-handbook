@@ -2,13 +2,13 @@
   "name": "browserify-hmr-example",
   "dependencies": {
     "browserify-hmr": "^0.3.6",
-    "ecstatic": "^3.1.1",
+    "http-server": "^0.11.1",
     "watchify": "^3.9.0"
   },
   "scripts": {
     "watch": "watchify -p browserify-hmr main.js -o public/bundle.js -dv",
     "build": "browserify main.js > public/bundle.js",
-    "www": "ecstatic -p 8000 public",
+    "www": "http-server -p 8000 public",
     "start": "npm run www & npm run watch"
   }
 }

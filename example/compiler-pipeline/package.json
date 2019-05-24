@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "browserify": "^5.9.1",
+    "browserify": "^16.2.3",
     "shasum": "^1.0.0",
-    "through2": "^1.0.0"
+    "through2": "^3.0.1"
   }
 }
