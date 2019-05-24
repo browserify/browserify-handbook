@@ -1,24 +1,15 @@
 {
   "name": "browserify-handbook",
-  "version": "1.9.0",
   "description": "how to build modular applications with browserify",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/substack/browserify-handbook.git"
-  },
-  "homepage": "https://github.com/substack/browserify-handbook",
-  "keywords": [
-    "documentation",
-    "guide",
-    "handbook",
-    "browserify"
-  ],
+  "version": "1.9.0",
   "author": {
     "name": "James Halliday",
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
-  "license": "cc-by-3.0",
+  "bin": {
+    "browserify-handbook": "bin/cmd.js"
+  },
   "dependencies": {
     "concat-stream": "^1.6.2",
     "default-pager": "^1.0.1",
@@ -27,7 +18,16 @@
     "marked-terminal": "^2.0.0",
     "through2": "^2.0.0"
   },
-  "bin": {
-    "browserify-handbook": "bin/cmd.js"
+  "homepage": "https://github.com/browserify/browserify-handbook",
+  "keywords": [
+    "browserify",
+    "documentation",
+    "guide",
+    "handbook"
+  ],
+  "license": "cc-by-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/browserify/browserify-handbook.git"
   }
 }

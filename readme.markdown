@@ -1298,7 +1298,7 @@ node and browserify both support but discourage the use of `$NODE_PATH`.
 ## non-javascript assets
 
 There are many
-[browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms)
+[browserify transforms](https://github.com/browserify/browserify/wiki/list-of-transforms)
 you can use to do many things. Commonly, transforms are used to include
 non-javascript assets into bundle files.
 
@@ -2393,7 +2393,7 @@ module-deps is invoked with some customizations here such as:
 * filtering out external, excluded, and ignored files
 * setting the default extensions for `.js` and `.json` plus options configured
 in the `opts.extensions` parameter in the browserify constructor
-* configuring a global [insert-module-globals](https://github.com/substack/insert-module-globals)
+* configuring a global [insert-module-globals](https://github.com/browserify/insert-module-globals)
 transform to detect and implement `process`, `Buffer`, `global`, `__dirname`,
 and `__filename`
 * setting up the list of node builtins which are shimmed by browserify
