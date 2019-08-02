@@ -82,6 +82,7 @@ front or backend alike.
 - [partitioning](#partitioning)
   - [factor-bundle](#factor-bundle)
   - [partition-bundle](#partition-bundle)
+- [electron](#electron)
 - [compiler pipeline](#compiler-pipeline)
   - [build your own browserify](#build-your-own-browserify)
   - [labeled phases](#labeled-phases)
@@ -2291,6 +2292,27 @@ a.addEventListener('click', function() {
     console.log(e, d);
   });
 });
+```
+
+# electron
+
+Electron is a tool to build desktop applications using Node.js. Electron doesn't
+require a bundler on its own, but it can be useful to bundle your application in
+advance to take advantage of browserify's transform and plugin ecosystem. Many
+modules like [nanohtml](https://github.com/choojs/nanohtml) also provide
+different implementations for Node.js and browsers. In Electron, we may want the
+browser implementation, but Electron's `require()` function would give us the
+Node.js implementation by default.
+
+Since Electron provides a Node.js environment, we don't have to bundle the
+builtin module shims. Since version 16.1, browserify has a `--node` flag that
+tells it to assume the bundle will be run in a Node.js environment.
+Electron also provides a special module `electron`, which cannot be bundled. So,
+we need to exclude it using `-x`/`--external`. We can bundle the renderer
+process for our application using:
+
+```bash
+browserify renderer-main.js --node -x electron -o renderer-bundle.js
 ```
 
 # compiler pipeline
