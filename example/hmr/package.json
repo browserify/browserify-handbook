@@ -1,7 +1,7 @@
 {
   "name": "browserify-hmr-example",
   "dependencies": {
-    "browserify-hmr": "^0.3.6",
+    "browserify-hmr": "^0.4.1",
     "http-server": "^0.11.1",
     "watchify": "^3.9.0"
   },
