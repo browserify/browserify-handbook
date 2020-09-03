@@ -64,6 +64,9 @@ front or backend alike.
   - [module philosophy](#module-philosophy)
 - [organizing modules](#organizing-modules)
   - [avoiding ../../../../../../..](#avoiding-)
+  - [symlink](#symlink)
+  - [node_modules](#node_modules)
+  - [local install](#local-install)
   - [non-javascript assets](#non-javascript-assets)
   - [reusable components](#reusable-components)
 - [testing in node and the browser](#testing-in-node-and-the-browser)
@@ -1278,6 +1281,41 @@ create a separate package.json with its own transform field in your
 transforms don't apply across module boundaries. This will make your modules
 more robust against configuration changes in your application and it will be
 easier to independently reuse the packages outside of your application.
+
+### local install
+
+As of [npm 2.0.0](http://blog.npmjs.org/post/98131109725/npm-2-0-0), you can
+install your "local code" as easy as any module hosted on npm. Your code behaves
+like any other standard module.
+
+Take for example sharing your main application code with the rest of the
+codebase. Let’s say it’s located inside `application/frontend/script/app`
+directory and main entry point is `index.js`. You would create "local module"
+like this:
+
+```js
+cd application/frontend/script/app
+touch index.js
+npm init
+```
+
+To install that local module, go to your project root and run
+
+```js
+npm install file:application/frontend/script/app --save
+```
+
+Your `package.json` after that will have new entry:
+
+```js
+"app": "file:application/frontend/script/app"
+```
+
+And you can easily require your code with:
+
+```js
+var app = require('app');
+```
 
 ### custom paths
 
