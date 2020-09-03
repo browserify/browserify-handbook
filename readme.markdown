@@ -1293,7 +1293,8 @@ This is because your application is more tightly coupled to a runtime
 environment configuration so there are more moving parts and your application
 will only work when your environment is setup correctly.
 
-node and browserify both support but discourage the use of `$NODE_PATH`.
+browserify supports `opts.paths` (although it is discouraged),
+but does not support `$NODE_PATH`.
 
 ## non-javascript assets
 
