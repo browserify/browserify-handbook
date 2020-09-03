@@ -18,10 +18,9 @@ packages published to [npm](https://npmjs.org) that were originally intended for
 use in node but not browsers will work just fine in the browser too.
 
 Increasingly, people are publishing modules to npm which are intentionally
-designed to work in both node and in the browser using browserify and many
-packages on npm are intended for use in just the browser.
+designed to work in both node and in the browser. Using browserify
 [npm is for all javascript](http://maxogden.com/node-packaged-modules.html),
-front or backend alike.
+front and backend alike.
 
 # table of contents
 
